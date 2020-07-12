@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodEaisy.TinySaas", "CodEaisy.TinySaas\CodEaisy.TinySaas.csproj", "{2555DF41-E6EA-443D-B6BE-7AE5440074A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodEaisy.TinySaas.Samples.WebApi", "..\samples\webapi\CodEaisy.TinySaas.Samples.WebApi.csproj", "{7077A246-0EC1-4AC8-9DC2-2C787DF8EEF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodEaisy.TinySaas.Samples.WebApi", "..\samples\WebApi\CodEaisy.TinySaas.Samples.WebApi.csproj", "{7077A246-0EC1-4AC8-9DC2-2C787DF8EEF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

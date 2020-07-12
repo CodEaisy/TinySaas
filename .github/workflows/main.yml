@@ -1,0 +1,41 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build and Release
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    tags:
+    - '*.*.*'
+    branches: [ dev ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  publish_nuget:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1.5.0
+      with:
+      # SDK version to use. Examples: 2.2.104, 3.1, 3.1.x
+        dotnet-version: 5.0.100-preview.6.20318.15
+    - name: Set env
+      run: |
+        wget http://ftp.us.debian.org/debian/pool/main/i/icu/libicu57_57.1-6+deb9u4_amd64.deb
+        echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/*/}
+    - name: Install dependencies
+      run: dotnet restore src
+    - name: Build
+      run: dotnet build src --configuration Release --no-restore
+    - name: Pack
+      run: dotnet pack ./src/CodEaisy.TinySaas --no-restore --verbosity normal -o app
+    - name: Publish
+      run: dotnet nuget push app/CodEaisy.TinySaas.${RELEASE_VERSION}.nupkg -k ${NUGET_API_KEY} -s https://api.nuget.org/v3/index.json
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
