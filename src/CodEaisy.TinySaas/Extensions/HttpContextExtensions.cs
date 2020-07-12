@@ -5,32 +5,22 @@ namespace CodEaisy.TinySaas.Extensions
 {
     public static class HttpContextExtensions
     {
-        public static void SetTenantContext<T>(this HttpContext context, ITenantContext<T> tenantContext) where T : ITenant
+        public static void SetTenantContext<T>(this HttpContext context, T tenant) where T : ITenant
         {
             Ensure.Argument.NotNull(context, nameof(context));
-            Ensure.Argument.NotNull(tenantContext, nameof(tenantContext));
+            Ensure.Argument.NotNull(tenant, nameof(tenant));
 
-            context.Items[MultiTenancyConstants.TenantContextKey] = tenantContext;
+            context.Items[MultiTenancyConstants.TenantContextKey] = tenant;
         }
 
-        public static ITenantContext<T> GetTenantContext<T>(this HttpContext context)
-            where T : ITenant
+        public static T GetCurrentTenant<T>(this HttpContext context)
+            where T : class, ITenant
         {
             Ensure.Argument.NotNull(context, nameof(context));
 
-            context.Items.TryGetValue(MultiTenancyConstants.TenantContextKey, out object tenantContext);
+            context.Items.TryGetValue(MultiTenancyConstants.TenantContextKey, out object tenant);
 
-            return tenantContext as ITenantContext<T>;
+            return tenant as T;
         }
-
-        public static T GetTenant<T>(this HttpContext context) where T : class, ITenant
-        {
-            var tenantContext = GetTenantContext<T>(context);
-
-            return tenantContext?.Tenant;
-        }
-
-        public static ITenant GetTenant(this HttpContext context)
-            => context.GetTenant<ITenant>();
     }
 }

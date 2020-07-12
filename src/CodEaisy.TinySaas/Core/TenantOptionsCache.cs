@@ -14,11 +14,11 @@ namespace CodEaisy.TinySaas.Core
         where TOptions : class
         where TTenant : ITenant
     {
-        private readonly ITenantContextAccessor<TTenant> _tenantAccessor;
+        private readonly ITenantAccessor<TTenant> _tenantAccessor;
         private readonly TenantOptionsCacheDictionary<TOptions> _tenantSpecificOptionsCache =
             new TenantOptionsCacheDictionary<TOptions>();
 
-        public TenantOptionsCache(ITenantContextAccessor<TTenant> tenantAccessor)
+        public TenantOptionsCache(ITenantAccessor<TTenant> tenantAccessor)
         {
             _tenantAccessor = tenantAccessor;
         }

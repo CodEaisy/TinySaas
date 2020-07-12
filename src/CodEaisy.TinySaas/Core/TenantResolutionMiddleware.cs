@@ -29,10 +29,10 @@ namespace CodEaisy.TinySaas.Core
 
             if (!context.Items.ContainsKey(MultiTenancyConstants.TenantContextKey))
             {
-                var tenantContextService = context.RequestServices.GetRequiredService<ITenantContextService<T>>();
+                var tenantContextService = context.RequestServices.GetRequiredService<ITenantService<T>>();
                 _logger.LogDebug("Resolving TenantContext using {loggerType}.", tenantContextService.GetType().Name);
 
-                var tenantContext = await tenantContextService.GetTenantContext();
+                var tenantContext = await tenantContextService.GetTenant();
 
                 if (tenantContext != null)
                 {

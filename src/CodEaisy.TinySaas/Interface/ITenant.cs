@@ -1,4 +1,3 @@
-using System;
 
 namespace CodEaisy.TinySaas.Interface
 {
@@ -10,7 +9,7 @@ namespace CodEaisy.TinySaas.Interface
         /// <summary>
         /// tenant identifier
         /// </summary>
-        Guid Id { get; }
+        string Id { get; }
 
         /// <summary>
         /// tenant known name, will be used as page title

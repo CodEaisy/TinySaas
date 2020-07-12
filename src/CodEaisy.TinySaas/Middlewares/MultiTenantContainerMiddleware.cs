@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CodEaisy.TinySaas.Middlewares
 {
-    internal class MultiTenantContainerMiddleware<TTenant> where TTenant : ITenant
+    internal class MultiTenantContainerMiddleware<TTenant> where TTenant : class, ITenant
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<MultiTenantContainerMiddleware<TTenant>> _logger;
@@ -24,7 +24,7 @@ namespace CodEaisy.TinySaas.Middlewares
         public async Task Invoke(HttpContext context,
             Func<MultiTenantContainer<TTenant>> multiTenantContainerAccessor)
         {
-            _logger.LogDebug("Setting up container for {tenant}", context.GetTenant());
+            _logger.LogDebug("Setting up container for {tenant}", context.GetCurrentTenant<TTenant>());
             //Set to current tenant container.
             //Begin new scope for request as ASP.NET Core standard scope is per-request
             context.RequestServices =

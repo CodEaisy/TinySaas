@@ -15,7 +15,7 @@ namespace CodEaisy.TinySaas
         /// <param name="app"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        private static IApplicationBuilder UseMultiTenantContainer<TTenant>(this IApplicationBuilder app) where TTenant : ITenant
+        private static IApplicationBuilder UseMultiTenantContainer<TTenant>(this IApplicationBuilder app) where TTenant : class, ITenant
             => app.UseMiddleware<MultiTenantContainerMiddleware<TTenant>>();
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace CodEaisy.TinySaas
         /// <typeparam name="TTenant"></typeparam>
         /// <typeparam name="TMissingTenantHandler"></typeparam>
         public static IApplicationBuilder UseMultitenancy<TTenant, TMissingTenantHandler>(this IApplicationBuilder app)
-            where TTenant : ITenant
+            where TTenant : class, ITenant
             where TMissingTenantHandler : IMissingTenantHandler
         {
             app.UseMultiTenantContainer<TTenant>()
@@ -85,7 +85,7 @@ namespace CodEaisy.TinySaas
         /// <typeparam name="TMissingTenantHandler"></typeparam>
         /// <typeparam name="TMissingTenantOptions"></typeparam>
         public static IApplicationBuilder UseMultitenancy<TTenant, TMissingTenantHandler, TMissingTenantOptions>(this IApplicationBuilder app, TMissingTenantOptions options)
-            where TTenant : ITenant
+            where TTenant : class, ITenant
             where TMissingTenantHandler : IMissingTenantHandler
             where TMissingTenantOptions : IMissingTenantOptions
         {

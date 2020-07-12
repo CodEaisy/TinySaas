@@ -5,7 +5,7 @@ namespace CodEaisy.TinySaas.Samples.WebApi
 {
     public class Tenant : ITenant
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 

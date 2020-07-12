@@ -13,7 +13,7 @@ namespace CodEaisy.TinySaas.Core
         public TenantBuilder(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
-            services.Add(ServiceDescriptor.Describe(typeof(ITenantContextService<T>), typeof(TenantContextService<T>), ServiceLifetime.Transient));
+            services.Add(ServiceDescriptor.Describe(typeof(ITenantService<T>), typeof(TenantService<T>), ServiceLifetime.Transient));
             _services = services;
         }
 

@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>Mubarak Imam</Authors>
     <Version>1.0.0-rc1</Version>
-    <RepositoryUrl>https://github.com/CodEaisy/multitenancy</RepositoryUrl>
+    <RepositoryUrl>https://github.com/CodEaisy/TinySaas</RepositoryUrl>
     <Company>CodEaisy Technology Services</Company>
     <PublishDocumentationFile>true</PublishDocumentationFile>
     <PackageId>CodEaisy.TinySaas</PackageId>

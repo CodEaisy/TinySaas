@@ -9,9 +9,9 @@ namespace CodEaisy.TinySaas.Core
     public class MultiTenantServiceProviderFactory<TTenant> : IServiceProviderFactory<ContainerBuilder>
         where TTenant : ITenant
     {
-        public Action<ITenantContext<TTenant>, ContainerBuilder> _tenantServicesConfiguration;
+        public Action<TTenant, ContainerBuilder> _tenantServicesConfiguration;
 
-        public MultiTenantServiceProviderFactory(Action<ITenantContext<TTenant>, ContainerBuilder> tenantServicesConfiguration)
+        public MultiTenantServiceProviderFactory(Action<TTenant, ContainerBuilder> tenantServicesConfiguration)
         {
             _tenantServicesConfiguration = tenantServicesConfiguration;
         }

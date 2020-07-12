@@ -4,6 +4,6 @@ namespace CodEaisy.TinySaas.Interface
 {
     public interface IMultiTenantStartup<TTenant> where TTenant : ITenant
     {
-        void ConfigureServices(ITenantContext<TTenant> context, ContainerBuilder container);
+        void ConfigureServices(TTenant context, ContainerBuilder container);
     }
 }

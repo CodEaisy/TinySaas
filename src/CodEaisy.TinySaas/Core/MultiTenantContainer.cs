@@ -14,7 +14,7 @@ namespace CodEaisy.TinySaas.Core
         //This is the base application container
         private readonly IContainer _applicationContainer;
         //This action configures a container builder
-        private readonly Action<ITenantContext<T>, ContainerBuilder> _tenantContainerConfiguration;
+        private readonly Action<T, ContainerBuilder> _tenantContainerConfiguration;
 
         //This dictionary keeps track of all of the tenant scopes that we have created
         private readonly Dictionary<string, ILifetimeScope> _tenantLifetimeScopes = new Dictionary<string, ILifetimeScope>();
@@ -28,7 +28,7 @@ namespace CodEaisy.TinySaas.Core
 
         public IComponentRegistry ComponentRegistry => _applicationContainer.ComponentRegistry;
 
-        public MultiTenantContainer(IContainer applicationContainer, Action<ITenantContext<T>, ContainerBuilder> containerConfiguration)
+        public MultiTenantContainer(IContainer applicationContainer, Action<T, ContainerBuilder> containerConfiguration)
         {
             _tenantContainerConfiguration = containerConfiguration;
             _applicationContainer = applicationContainer;
@@ -74,13 +74,13 @@ namespace CodEaisy.TinySaas.Core
         }
 
         /// <summary>
-        /// Get the current teanant from the application container
+        /// Get the current tenant from the application container
         /// </summary>
         /// <returns></returns>
-        private ITenantContext<T> GetCurrentTenant()
+        private T GetCurrentTenant()
         {
             //We have registered our TenantAccessService in Part 1, the service is available in the application container which allows us to access the current Tenant
-            return  _applicationContainer.Resolve<ITenantContextService<T>>().GetTenantContext().GetAwaiter().GetResult();
+            return  _applicationContainer.Resolve<ITenantService<T>>().GetTenant().GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace CodEaisy.TinySaas.Core
         /// <returns></returns>
         public ILifetimeScope GetCurrentTenantScope()
         {
-            return GetTenantScope(GetCurrentTenant()?.Tenant?.Id.ToString());
+            return GetTenantScope(GetCurrentTenant()?.Id);
         }
 
         /// <summary>

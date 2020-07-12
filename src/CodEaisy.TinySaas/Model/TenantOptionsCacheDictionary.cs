@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Options;
 
@@ -13,15 +12,15 @@ namespace CodEaisy.TinySaas.Model
         /// <summary>
         /// Caches stored in memory
         /// </summary>
-        private readonly ConcurrentDictionary<Guid, IOptionsMonitorCache<TOptions>> _tenantSpecificOptionCaches =
-            new ConcurrentDictionary<Guid, IOptionsMonitorCache<TOptions>>();
+        private readonly ConcurrentDictionary<string, IOptionsMonitorCache<TOptions>> _tenantSpecificOptionCaches =
+            new ConcurrentDictionary<string, IOptionsMonitorCache<TOptions>>();
 
         /// <summary>
         /// Get options for specific tenant (create if not exists)
         /// </summary>
         /// <param name="tenantId"></param>
         /// <returns></returns>
-        public IOptionsMonitorCache<TOptions> Get(Guid tenantId)
+        public IOptionsMonitorCache<TOptions> Get(string tenantId)
         {
             return _tenantSpecificOptionCaches.GetOrAdd(tenantId, new OptionsCache<TOptions>());
         }

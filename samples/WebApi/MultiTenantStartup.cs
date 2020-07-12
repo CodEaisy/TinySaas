@@ -7,9 +7,9 @@ namespace CodEaisy.TinySaas.Samples.WebApi
 {
     public class MultiTenantStartup : IMultiTenantStartup<Tenant>
     {
-        public void ConfigureServices(ITenantContext<Tenant> context, ContainerBuilder container)
+        public void ConfigureServices(Tenant tenant, ContainerBuilder container)
         {
-            // #region inbuilt DI pattern
+            #region inbuilt DI pattern
             // // to register services, you can either use inbuilt DI pattern
             // // 1. create a service collection
             // var services = new ServiceCollection();
@@ -20,7 +20,7 @@ namespace CodEaisy.TinySaas.Samples.WebApi
 
             // // 3. add the services into the container
             // container.Populate(services);
-            // #endregion
+            #endregion
 
             #region AutoFac pattern
 

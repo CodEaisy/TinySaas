@@ -17,11 +17,11 @@ namespace CodEaisy.TinySaas.Core
         private readonly IEnumerable<IConfigureOptions<TOptions>> _setups;
         private readonly IEnumerable<IPostConfigureOptions<TOptions>> _postConfigures;
         private readonly Action<TOptions, T> _tenantConfig;
-        private readonly ITenantContextAccessor<T> _tenantAccessor;
+        private readonly ITenantAccessor<T> _tenantAccessor;
 
         public TenantOptionsFactory(
             IEnumerable<IConfigureOptions<TOptions>> setups,
-            IEnumerable<IPostConfigureOptions<TOptions>> postConfigures, Action<TOptions, T> tenantConfig, ITenantContextAccessor<T> tenantAccessor)
+            IEnumerable<IPostConfigureOptions<TOptions>> postConfigures, Action<TOptions, T> tenantConfig, ITenantAccessor<T> tenantAccessor)
         {
             _setups = setups;
             _postConfigures = postConfigures;
