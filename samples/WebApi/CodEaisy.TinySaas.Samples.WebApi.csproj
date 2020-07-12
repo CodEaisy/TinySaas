@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CodEaisy.MultiTenancy\CodEaisy.MultiTenancy.csproj" />
+    <ProjectReference Include="..\..\src\CodEaisy.TinySaas\CodEaisy.TinySaas.csproj" />
   </ItemGroup>
 
 </Project>

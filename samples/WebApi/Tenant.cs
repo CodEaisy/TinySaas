@@ -1,9 +1,9 @@
 using System;
 using CodEaisy.TinySaas.Interface;
 
-namespace CodEaisy.TinySaas.Models
+namespace CodEaisy.TinySaas.Samples.WebApi
 {
-    public class TenantBase : ITenant
+    public class Tenant : ITenant
     {
         public Guid Id { get; set; }
 
