@@ -5,7 +5,7 @@ namespace CodEaisy.TinySaas.Extensions
 {
     public static class HttpContextExtensions
     {
-        public static void SetTenantContext<T>(this HttpContext context, T tenant) where T : ITenant
+        public static void SetCurrentTenant<T>(this HttpContext context, T tenant) where T : ITenant
         {
             Ensure.Argument.NotNull(context, nameof(context));
             Ensure.Argument.NotNull(tenant, nameof(tenant));

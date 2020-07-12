@@ -5,15 +5,15 @@ name: Build and Release
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  release:
+  push:
     tags:
-    - '*.*.*'
-    branches: [ dev ]
+      - v[1-9]+.[0-9]+.*
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   publish_nuget:
+    if: startsWith(github.ref, 'refs/tags/v')
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -36,6 +36,6 @@ jobs:
     - name: Pack
       run: dotnet pack ./src/CodEaisy.TinySaas --no-restore --verbosity normal -o app
     - name: Publish
-      run: dotnet nuget push app/CodEaisy.TinySaas.${RELEASE_VERSION}.nupkg -k ${NUGET_API_KEY} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push app/CodEaisy.TinySaas.${RELEASE_VERSION:1}.nupkg -k ${NUGET_API_KEY} -s https://api.nuget.org/v3/index.json
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}

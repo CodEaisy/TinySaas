@@ -37,7 +37,7 @@ namespace CodEaisy.TinySaas.Core
                 if (tenantContext != null)
                 {
                     _logger.LogDebug("TenantContext Resolved. Adding to HttpContext.");
-                    context.SetTenantContext(tenantContext);
+                    context.SetCurrentTenant(tenantContext);
                 }
                 else
                 {
