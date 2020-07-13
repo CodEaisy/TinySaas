@@ -19,7 +19,7 @@ TinySaas is a C# library for building multitenant applications with .NET Core 3.
 - Add dependency to [CodEaisy.TinySaas][nuget_link] from Nuget
 
 ```bash
-dotnet add package CodEaisy.TinySaas --version 1.0.0-rc3
+dotnet add package CodEaisy.TinySaas --version 1.0.0-rc4
 ```
 
 - In `Startup.cs`, add the following inside the `ConfigureServices` method.
