@@ -1,6 +1,8 @@
 # TinySaas
 
-![Build](https://github.com/CodEaisy/TinySaas/workflows/Build/badge.svg)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/codeaisy/tinysaas/Build)
+![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/codeaisy.tinysaas)
+![Nuget](https://img.shields.io/nuget/dt/CodEaisy.TinySaas)
 
 TinySaas is a C# library for building multitenant applications with .NET Core 3.0+
 
@@ -14,6 +16,12 @@ TinySaas is a C# library for building multitenant applications with .NET Core 3.
 
 ## Quickstart
 
+- Add dependency to [CodEaisy.TinySaas][nuget_link] from Nuget
+
+```bash
+dotnet add package CodEaisy.TinySaas --version 1.0.0-rc3
+```
+
 - In `Startup.cs`, add the following inside the `ConfigureServices` method.
 
   ```csharp
@@ -24,7 +32,7 @@ TinySaas is a C# library for building multitenant applications with .NET Core 3.
         // ...
 
         // OPTION 1
-        services.AddMultiTenancy<Tenant, TenantStore<Tenant>, ResolutionStrategy>();
+        services.AddMultiTenancy<Tenant, TenantStore<Tenant>, TenantResolutionStrategy>();
 
         // OPTION 2
         // uses default `CodEaisy.TinySaas.Model.TinyTenant` as tenant model
@@ -35,9 +43,6 @@ TinySaas is a C# library for building multitenant applications with .NET Core 3.
         // services.AddControllers();
     }
   ```
-
-  NB: Option 1 - `Tenant` must implement `CodEaisy.TinySaas.Interface.ITenant`
-  `TenantStore` and `TenantResolutionStrategy` must implement `CodEaisy.TinySaas.Interface.ITenantStore` and `CodEaisy.TinySaas.Interface.ITenantResolutionStrategy` respectively.
 
   Then, add the following in the `Configure` method
 
@@ -82,8 +87,12 @@ TinySaas is a C# library for building multitenant applications with .NET Core 3.
             .ConfigureMultiTenancy<Tenant>(ClassName.StaticMethodName);
   ```
 
-  NB: `TenantStartup` must implement `IMultiTenantStartup`
-  `ClassName.StaticMethodName` must be of type `System.Action<TTenant, Autofac.ContainerBuilder>` where `TTenant` implements `ITenant`
+  **NOTE**:
+  - `Tenant` must implement `CodEaisy.TinySaas.Interface`  `ITenant`.
+  - `TenantStore` must implement `CodEaisy.TinySaas.Interface.ITenantStore`.
+  - `TenantResolutionStrategy` must implement `CodEaisy.TinySaas.Interface.ITenantResolutionStrategy` respectively.
+  - `TenantStartup` must implement `IMultiTenantStartup`
+  - `ClassName.StaticMethodName` must be of type `System.Action<TTenant, Autofac.ContainerBuilder>` where `TTenant` implements `ITenant`
 
 ## Requirements
 
@@ -104,3 +113,4 @@ guidelines for [contributing][contributing] and then check out one of our issues
 
 [contributing]: https://github.com/codeaisy/tinysaas/blob/master/CONTRIBUTING.md
 [changelog]: https://github.com/angular/angular/blob/master/CHANGELOG.md
+[nuget_link]: https://www.nuget.org/packages/CodEaisy.TinySaas
