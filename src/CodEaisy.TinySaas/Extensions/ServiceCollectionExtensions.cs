@@ -1,5 +1,6 @@
 using CodEaisy.TinySaas.Core;
 using CodEaisy.TinySaas.Interface;
+using CodEaisy.TinySaas.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CodEaisy.TinySaas.Extensions
@@ -14,7 +15,7 @@ namespace CodEaisy.TinySaas.Extensions
         /// </summary>
         /// <param name="services"></param>
         public static IServiceCollection AddMultiTenancy<TTenant, TTenantStore, TResolutionStrategy>(this IServiceCollection services)
-            where TTenant : ITenant
+            where TTenant : class, ITenant
             where TTenantStore : ITenantStore<TTenant>
             where TResolutionStrategy : ITenantResolutionStrategy
         {
@@ -30,8 +31,8 @@ namespace CodEaisy.TinySaas.Extensions
         /// </summary>
         /// <param name="services"></param>
         public static IServiceCollection AddMultiTenancy<TTenantStore, TResolutionStrategy>(this IServiceCollection services)
-            where TTenantStore : ITenantStore<ITenant>
+            where TTenantStore : ITenantStore<TinyTenant>
             where TResolutionStrategy : ITenantResolutionStrategy
-            => services.AddMultiTenancy<ITenant, TTenantStore, TResolutionStrategy>();
+            => services.AddMultiTenancy<TinyTenant, TTenantStore, TResolutionStrategy>();
     }
 }

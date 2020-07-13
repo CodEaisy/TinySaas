@@ -24,6 +24,6 @@ namespace CodEaisy.TinySaas.Interface
         /// <summary>
         /// disable tenants, takes tenants offline
         /// </summary>
-        bool Enabled { get; set; }
+        bool Enabled { get; }
     }
 }

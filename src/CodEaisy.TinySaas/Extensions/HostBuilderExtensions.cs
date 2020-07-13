@@ -1,3 +1,5 @@
+using System;
+using Autofac;
 using CodEaisy.TinySaas.Core;
 using CodEaisy.TinySaas.Interface;
 using Microsoft.Extensions.Hosting;
@@ -17,8 +19,21 @@ namespace CodEaisy.TinySaas.Extensions
             where TTenant : ITenant
         {
             var multitenantStartup = new TMultiTenantStartup();
+            hostBuilder.ConfigureMultiTenancy<TTenant>(multitenantStartup.ConfigureServices);
+            return hostBuilder;
+        }
 
-            hostBuilder.UseServiceProviderFactory(new MultiTenantServiceProviderFactory<TTenant>(multitenantStartup.ConfigureServices));
+        /// <summary>
+        /// add multitenant services via an action
+        /// </summary>
+        /// <param name="hostBuilder"></param>
+        /// <param name="tenantServicesConfiguration"></param>
+        /// <typeparam name="TTenant"></typeparam>
+        public static IHostBuilder ConfigureMultiTenancy<TTenant>(this IHostBuilder hostBuilder,
+            Action<TTenant, ContainerBuilder> tenantServicesConfiguration)
+            where TTenant : ITenant
+        {
+            hostBuilder.UseServiceProviderFactory(new MultiTenantServiceProviderFactory<TTenant>(tenantServicesConfiguration));
 
             return hostBuilder;
         }
