@@ -1,6 +1,7 @@
 using CodEaisy.TinySaas.Core;
 using CodEaisy.TinySaas.Interface;
 using CodEaisy.TinySaas.Middlewares;
+using CodEaisy.TinySaas.Model;
 using Microsoft.AspNetCore.Builder;
 
 namespace CodEaisy.TinySaas
@@ -13,17 +14,17 @@ namespace CodEaisy.TinySaas
         /// add multitenant container
         /// </summary>
         /// <param name="app"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        private static IApplicationBuilder UseMultiTenantContainer<TTenant>(this IApplicationBuilder app) where TTenant : class, ITenant
-            => app.UseMiddleware<MultiTenantContainerMiddleware<TTenant>>();
+        /// <typeparam name="TTenant"></typeparam>
+        public static IApplicationBuilder UseMultiTenantContainer<TTenant>(this IApplicationBuilder app) where TTenant : class, ITenant
+            => app.UseMiddleware<MultiTenantContainerMiddleware<TTenant>>()
+                .UseTenantResolutionMiddleware<TTenant>();
 
         /// <summary>
-        /// add multitenancy resolution middleware and a missing tenant handler
+        /// adds tenant resolution middleware
         /// </summary>
         /// <param name="app"></param>
         /// <typeparam name="TTenant"></typeparam>
-        private static IApplicationBuilder UseTenantResolutionMiddleware<TTenant>(this IApplicationBuilder app)
+        public static IApplicationBuilder UseTenantResolutionMiddleware<TTenant>(this IApplicationBuilder app)
             where TTenant : ITenant
         {
             app.UseMiddleware<TenantResolutionMiddleware<TTenant>>();
@@ -31,11 +32,11 @@ namespace CodEaisy.TinySaas
         }
 
         /// <summary>
-        /// add multitenancy with default resolution middleware and a missing tenant handler
+        /// adds missing tenant handler with options
         /// </summary>
         /// <param name="app"></param>
         /// <typeparam name="TMissingTenantHandler"></typeparam>
-        private static IApplicationBuilder UseMissingTenantHandler<TMissingTenantHandler, TMissingTenantOptions>(this IApplicationBuilder app, TMissingTenantOptions options)
+        public static IApplicationBuilder UseMissingTenantHandler<TMissingTenantHandler, TMissingTenantOptions>(this IApplicationBuilder app, TMissingTenantOptions options)
             where TMissingTenantHandler : IMissingTenantHandler
             where TMissingTenantOptions : IMissingTenantOptions
         {
@@ -44,11 +45,11 @@ namespace CodEaisy.TinySaas
         }
 
         /// <summary>
-        /// add multitenancy with default resolution middleware and a missing tenant handler
+        /// adds a missing tenant handler
         /// </summary>
         /// <param name="app"></param>
         /// <typeparam name="TMissingTenantHandler"></typeparam>
-        private static IApplicationBuilder UseMissingTenantHandler<TMissingTenantHandler>(this IApplicationBuilder app)
+        public static IApplicationBuilder UseMissingTenantHandler<TMissingTenantHandler>(this IApplicationBuilder app)
             where TMissingTenantHandler : IMissingTenantHandler
         {
             app.UseMiddleware<TMissingTenantHandler>();
@@ -70,7 +71,6 @@ namespace CodEaisy.TinySaas
             where TMissingTenantHandler : IMissingTenantHandler
         {
             app.UseMultiTenantContainer<TTenant>()
-                .UseTenantResolutionMiddleware<TTenant>()
                 .UseMissingTenantHandler<TMissingTenantHandler>();
 
             return app;
@@ -90,9 +90,20 @@ namespace CodEaisy.TinySaas
             where TMissingTenantOptions : IMissingTenantOptions
         {
             app.UseMultiTenantContainer<TTenant>()
-                .UseTenantResolutionMiddleware<TTenant>()
                 .UseMissingTenantHandler<TMissingTenantHandler, TMissingTenantOptions>(options);
 
+            return app;
+        }
+
+        /// <summary>
+        /// add multitenancy with TinyTenant and supplied missing tenant handler
+        /// </summary>
+        /// <param name="app"></param>
+        /// <typeparam name="TMissingTenantHandler"></typeparam>
+        public static IApplicationBuilder UseMultitenancy<TMissingTenantHandler>(this IApplicationBuilder app)
+            where TMissingTenantHandler : IMissingTenantHandler
+        {
+            app.UseMultitenancy<TinyTenant, TMissingTenantHandler>();
             return app;
         }
 

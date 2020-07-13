@@ -1,4 +1,6 @@
-# TinySaas ![Build](https://github.com/CodEaisy/TinySaas/workflows/Build/badge.svg)
+# TinySaas
+
+![Build](https://github.com/CodEaisy/TinySaas/workflows/Build/badge.svg)
 
 TinySaas is a C# library for building multitenant applications with .NET Core 3.0+
 
@@ -10,11 +12,7 @@ TinySaas is a C# library for building multitenant applications with .NET Core 3.
 - [x] Database per Tenant (Data Isolation)
 - [x] Shared Database (Data Isolation)
 
-## Requirements
-
-ASP.NET Core 3.0+
-
-## How to
+## Quickstart
 
 - In `Startup.cs`, add the following inside the `ConfigureServices` method.
 
@@ -41,6 +39,34 @@ ASP.NET Core 3.0+
   NB: Option 1 - `Tenant` must implement `CodEaisy.TinySaas.Interface.ITenant`
   `TenantStore` and `TenantResolutionStrategy` must implement `CodEaisy.TinySaas.Interface.ITenantStore` and `CodEaisy.TinySaas.Interface.ITenantResolutionStrategy` respectively.
 
+  Then, add the following in the `Configure` method
+
+  ```csharp
+  public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+  {
+      if (env.IsDevelopment())
+      {
+          app.UseDeveloperExceptionPage();
+      }
+
+      // enable multitenant support, with missing tenant handler and tenant container
+
+      // OPTION 1
+      // missing tenant handler has a dependency that can be provided immediately
+      app.UseMultitenancy<Tenant, MissingTenantHandler, MissingTenantOptions>(missingTenantOptions);
+
+      // OPTION 2
+      // missing tenant handler does not have a dependency or dependency is already registered in services
+      app.UseMultitenancy<Tenant, MissingTenantHandler>();
+
+      // OPTION 3
+      // Use `SimpleTenant` as tenant model, and missing tenant handler does not have a dependency or dependency is already registered in services
+      app.UseMultitenancy<TMissingTenantHandler>()
+
+      // ...
+  }
+  ```
+
 - In `Program.cs`, add the following in the `CreateHostBuilder` method.
 
   ```csharp
@@ -58,3 +84,19 @@ ASP.NET Core 3.0+
 
   NB: `TenantStartup` must implement `IMultiTenantStartup`
   `ClassName.StaticMethodName` must be of type `System.Action<TTenant, Autofac.ContainerBuilder>` where `TTenant` implements `ITenant`
+
+## Requirements
+
+ASP.NET Core 3.0+
+
+## Changelog
+
+[Learn about the latest improvements][changelog].
+
+## Want to help ?
+
+Want to file a bug, contribute some code, or improve documentation? Excellent! Read up on our
+guidelines for [contributing][contributing] and then check out one of our issues in the [hotlist: community-help](https://github.com/codeaisy/tinysaas/labels/hotlist%3A%20community-help).
+
+[contributing]: https://github.com/codeaisy/tinysaas/blob/master/CONTRIBUTING.md
+[changelog]: https://github.com/angular/angular/blob/master/CHANGELOG.md

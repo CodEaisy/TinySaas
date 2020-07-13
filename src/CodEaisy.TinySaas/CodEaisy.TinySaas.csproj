@@ -8,6 +8,7 @@
     <Company>CodEaisy Technology Services</Company>
     <PublishDocumentationFile>true</PublishDocumentationFile>
     <PackageId>CodEaisy.TinySaas</PackageId>
+    <PackageLicenseUrl>https://licenses.nuget.org/MIT</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>

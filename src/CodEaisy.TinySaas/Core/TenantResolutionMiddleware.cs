@@ -29,15 +29,15 @@ namespace CodEaisy.TinySaas.Core
 
             if (!context.Items.ContainsKey(MultiTenancyConstants.TenantContextKey))
             {
-                var tenantContextService = context.RequestServices.GetRequiredService<ITenantService<T>>();
-                _logger.LogDebug("Resolving TenantContext using {loggerType}.", tenantContextService.GetType().Name);
+                var tenantService = context.RequestServices.GetRequiredService<ITenantService<T>>();
+                _logger.LogDebug("Resolving TenantContext using {loggerType}.", tenantService.GetType().Name);
 
-                var tenantContext = await tenantContextService.GetTenant();
+                var tenant = await tenantService.GetTenant();
 
-                if (tenantContext != null)
+                if (tenant != null)
                 {
                     _logger.LogDebug("TenantContext Resolved. Adding to HttpContext.");
-                    context.SetCurrentTenant(tenantContext);
+                    context.SetCurrentTenant(tenant);
                 }
                 else
                 {
