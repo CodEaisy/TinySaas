@@ -93,6 +93,10 @@ ASP.NET Core 3.0+
 
 [Learn about the latest improvements][changelog].
 
+## Credits
+
+[Gunnar Peipman](https://gunnarpeipman.com/) and [Michael McKenna](https://michael-mckenna.com/) for their awesome works on Saas in ASP.NET Core.
+
 ## Want to help ?
 
 Want to file a bug, contribute some code, or improve documentation? Excellent! Read up on our
