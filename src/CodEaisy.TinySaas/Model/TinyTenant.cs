@@ -1,10 +1,11 @@
+using System;
 using CodEaisy.TinySaas.Interface;
 
 namespace CodEaisy.TinySaas.Model
 {
     public class TinyTenant : ITenant
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

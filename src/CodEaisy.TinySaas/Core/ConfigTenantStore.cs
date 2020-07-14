@@ -1,16 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CodEaisy.TinySaas.Interface;
+using CodEaisy.TinySaas.Model;
 using Microsoft.Extensions.Options;
 
 namespace CodEaisy.TinySaas.Core
 {
-    public enum TenantIdentifier
-    {
-        Id = 0,
-        Host = 1
-    }
-
     public class ConfigTenancyOptions<TTenant> where TTenant : ITenant
     {
         public TenantIdentifier Identifier { get; set; }

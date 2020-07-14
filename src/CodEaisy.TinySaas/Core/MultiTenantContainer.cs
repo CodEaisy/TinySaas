@@ -96,28 +96,29 @@ namespace CodEaisy.TinySaas.Core
         /// Get (configure on missing)
         /// </summary>
         /// <param name="tenantId"></param>
-        /// <returns></returns>
-        public ILifetimeScope GetTenantScope(string tenantId)
+        public ILifetimeScope GetTenantScope(Guid? tenantId)
         {
             //If no tenant (e.g. early on in the pipeline, we just use the application container)
-            if (tenantId == null)
+            if (!tenantId.HasValue || tenantId == Guid.Empty)
                 return _applicationContainer;
 
+            var tenantIdString = tenantId.ToString();
+
             //If we have created a lifetime for a tenant, return
-            if (_tenantLifetimeScopes.ContainsKey(tenantId))
-                return _tenantLifetimeScopes[tenantId];
+            if (_tenantLifetimeScopes.ContainsKey(tenantIdString))
+                return _tenantLifetimeScopes[tenantIdString];
 
             lock (_lock)
             {
-                if (_tenantLifetimeScopes.ContainsKey(tenantId))
+                if (_tenantLifetimeScopes.ContainsKey(tenantIdString))
                 {
-                    return _tenantLifetimeScopes[tenantId];
+                    return _tenantLifetimeScopes[tenantIdString];
                 }
                 else
                 {
                     //This is a new tenant, configure a new lifetimescope for it using our tenant sensitive configuration method
-                    _tenantLifetimeScopes.Add(tenantId, _applicationContainer.BeginLifetimeScope(_multiTenantTag, a => _tenantContainerConfiguration(GetCurrentTenant(), a)));
-                    return _tenantLifetimeScopes[tenantId];
+                    _tenantLifetimeScopes.Add(tenantIdString, _applicationContainer.BeginLifetimeScope(_multiTenantTag, a => _tenantContainerConfiguration(GetCurrentTenant(), a)));
+                    return _tenantLifetimeScopes[tenantIdString];
                 }
             }
         }
