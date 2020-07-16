@@ -8,19 +8,9 @@ namespace CodEaisy.TinySaas.Interface
     public interface ITenant
     {
         /// <summary>
-        /// tenant identifier
+        /// tenant unique identifier
         /// </summary>
-        Guid Id { get; }
-
-        /// <summary>
-        /// tenant known name, will be used as page title
-        /// </summary>
-        string Name { get; }
-
-        /// <summary>
-        /// tenant url (without the scheme), subdomain works
-        /// </summary>
-        string Host { get; }
+        string Identifier { get; set; }
 
         /// <summary>
         /// disable tenants, takes tenants offline

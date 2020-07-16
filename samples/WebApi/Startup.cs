@@ -1,6 +1,7 @@
-using CodEaisy.TinySaas.Core;
 using CodEaisy.TinySaas.Core.Resolvers;
+using CodEaisy.TinySaas.Core.Stores;
 using CodEaisy.TinySaas.Extensions;
+using CodEaisy.TinySaas.Middlewares;
 using CodEaisy.TinySaas.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

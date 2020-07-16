@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace CodEaisy.TinySaas.Core
+namespace CodEaisy.TinySaas.Middlewares
 {
     public class RedirectMissingTenantHandler : IMissingTenantHandler
     {

@@ -4,9 +4,9 @@ using Autofac.Extensions.DependencyInjection;
 using CodEaisy.TinySaas.Interface;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CodEaisy.TinySaas.Core
+namespace CodEaisy.TinySaas.Core.Internals
 {
-    public class MultiTenantServiceProviderFactory<TTenant> : IServiceProviderFactory<ContainerBuilder>
+    internal class MultiTenantServiceProviderFactory<TTenant> : IServiceProviderFactory<ContainerBuilder>
         where TTenant : ITenant
     {
         public Action<TTenant, ContainerBuilder> _tenantServicesConfiguration;

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
-using CodEaisy.TinySaas.Core;
+using CodEaisy.TinySaas.Core.Internals;
 using CodEaisy.TinySaas.Extensions;
 using CodEaisy.TinySaas.Interface;
 using Microsoft.AspNetCore.Http;

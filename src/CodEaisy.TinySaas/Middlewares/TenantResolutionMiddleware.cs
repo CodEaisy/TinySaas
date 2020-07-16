@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace CodEaisy.TinySaas.Core
+namespace CodEaisy.TinySaas.Middlewares
 {
     public class TenantResolutionMiddleware<T> where T : ITenant
     {
@@ -34,7 +34,7 @@ namespace CodEaisy.TinySaas.Core
 
                 var tenant = await tenantService.GetTenant();
 
-                if (tenant != null)
+                if (tenant != null && tenant.Enabled)
                 {
                     _logger.LogDebug("TenantContext Resolved. Adding to HttpContext.");
                     context.SetCurrentTenant(tenant);

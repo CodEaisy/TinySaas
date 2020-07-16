@@ -26,8 +26,8 @@ namespace CodEaisy.TinySaas.Samples.WebApi.Controllers
             var tenantFromContext = HttpContext.GetCurrentTenant<Tenant>();
 
             return Ok(new {
-                NameFromContext = tenantFromContext.Name,
-                NameFromService = tenantFromService.Name,
+                NameFromContext = tenantFromContext.Identifier,
+                NameFromService = tenantFromService.Identifier,
             });
         }
 

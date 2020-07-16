@@ -1,7 +1,7 @@
 using CodEaisy.TinySaas.Interface;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CodEaisy.TinySaas.Core
+namespace CodEaisy.TinySaas.Core.Internals
 {
     /// <summary>
     /// Configure tenant services
@@ -22,7 +22,7 @@ namespace CodEaisy.TinySaas.Core
         /// </summary>
         /// <typeparam name="V"></typeparam>
         /// <param name="lifetime"></param>
-        internal TenantBuilder<T> WithResolutionStrategy<V>(ServiceLifetime lifetime = ServiceLifetime.Transient) where V : ITenantResolutionStrategy
+        public TenantBuilder<T> WithResolutionStrategy<V>(ServiceLifetime lifetime = ServiceLifetime.Transient) where V : ITenantResolutionStrategy
         {
             _services.Add(ServiceDescriptor.Describe(typeof(ITenantResolutionStrategy), typeof(V), lifetime));
             return this;
@@ -33,8 +33,7 @@ namespace CodEaisy.TinySaas.Core
         /// </summary>
         /// <typeparam name="V"></typeparam>
         /// <param name="lifetime"></param>
-        /// <returns></returns>
-        internal TenantBuilder<T> WithStore<V>(ServiceLifetime lifetime = ServiceLifetime.Transient) where V : ITenantStore<T>
+        public TenantBuilder<T> WithStore<V>(ServiceLifetime lifetime = ServiceLifetime.Singleton) where V : ITenantStore<T>
         {
             _services.Add(ServiceDescriptor.Describe(typeof(ITenantStore<T>), typeof(V), lifetime));
             return this;

@@ -3,7 +3,7 @@ using CodEaisy.TinySaas.Interface;
 using CodEaisy.TinySaas.Model;
 using Microsoft.Extensions.Options;
 
-namespace CodEaisy.TinySaas.Core
+namespace CodEaisy.TinySaas.Core.Internals
 {
     /// <summary>
     /// Tenant aware options cache
@@ -25,24 +25,24 @@ namespace CodEaisy.TinySaas.Core
 
         public void Clear()
         {
-            _tenantSpecificOptionsCache.Get(_tenantAccessor.Tenant.Id).Clear();
+            _tenantSpecificOptionsCache.Get(_tenantAccessor.Tenant.Identifier).Clear();
         }
 
         public TOptions GetOrAdd(string name, Func<TOptions> createOptions)
         {
-            return _tenantSpecificOptionsCache.Get(_tenantAccessor.Tenant.Id)
+            return _tenantSpecificOptionsCache.Get(_tenantAccessor.Tenant.Identifier)
                 .GetOrAdd(name, createOptions);
         }
 
         public bool TryAdd(string name, TOptions options)
         {
-            return _tenantSpecificOptionsCache.Get(_tenantAccessor.Tenant.Id)
+            return _tenantSpecificOptionsCache.Get(_tenantAccessor.Tenant.Identifier)
                 .TryAdd(name, options);
         }
 
         public bool TryRemove(string name)
         {
-            return _tenantSpecificOptionsCache.Get(_tenantAccessor.Tenant.Id)
+            return _tenantSpecificOptionsCache.Get(_tenantAccessor.Tenant.Identifier)
                 .TryRemove(name);
         }
     }

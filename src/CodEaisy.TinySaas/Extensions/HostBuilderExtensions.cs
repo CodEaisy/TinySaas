@@ -1,6 +1,6 @@
 using System;
 using Autofac;
-using CodEaisy.TinySaas.Core;
+using CodEaisy.TinySaas.Core.Internals;
 using CodEaisy.TinySaas.Interface;
 using Microsoft.Extensions.Hosting;
 

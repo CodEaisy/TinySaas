@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CodEaisy.TinySaas.Interface;
 using Microsoft.Extensions.Options;
 
-namespace CodEaisy.TinySaas.Core
+namespace CodEaisy.TinySaas.Core.Internals
 {
      /// <summary>
     /// Create a new options instance with configuration applied

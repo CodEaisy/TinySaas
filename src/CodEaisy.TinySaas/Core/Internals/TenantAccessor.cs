@@ -2,9 +2,9 @@ using CodEaisy.TinySaas.Extensions;
 using CodEaisy.TinySaas.Interface;
 using Microsoft.AspNetCore.Http;
 
-namespace CodEaisy.TinySaas.Core
+namespace CodEaisy.TinySaas.Core.Internals
 {
-    public class TenantAccessor<T>: ITenantAccessor<T> where T : class, ITenant
+    internal class TenantAccessor<T>: ITenantAccessor<T> where T : class, ITenant
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 

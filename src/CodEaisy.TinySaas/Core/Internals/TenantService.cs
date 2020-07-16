@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
 using CodEaisy.TinySaas.Interface;
 
-namespace CodEaisy.TinySaas.Core
+namespace CodEaisy.TinySaas.Core.Internals
 {
     /// <summary>
     /// Tenant service
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class TenantService<T> : ITenantService<T> where T : ITenant
+    public class TenantService<T> : ITenantService<T> where T : class, ITenant
     {
         private readonly ITenantResolutionStrategy _tenantResolutionStrategy;
         private readonly ITenantStore<T> _tenantStore;

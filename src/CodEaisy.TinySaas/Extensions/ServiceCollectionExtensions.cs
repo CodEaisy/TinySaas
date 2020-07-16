@@ -1,4 +1,4 @@
-using CodEaisy.TinySaas.Core;
+using CodEaisy.TinySaas.Core.Internals;
 using CodEaisy.TinySaas.Interface;
 using CodEaisy.TinySaas.Model;
 using Microsoft.Extensions.DependencyInjection;

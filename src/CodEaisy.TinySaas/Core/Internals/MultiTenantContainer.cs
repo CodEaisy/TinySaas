@@ -7,7 +7,7 @@ using Autofac.Core.Lifetime;
 using Autofac.Core.Resolving;
 using CodEaisy.TinySaas.Interface;
 
-namespace CodEaisy.TinySaas.Core
+namespace CodEaisy.TinySaas.Core.Internals
 {
     internal class MultiTenantContainer<T> : IContainer where T : ITenant
     {
@@ -89,36 +89,34 @@ namespace CodEaisy.TinySaas.Core
         /// <returns></returns>
         public ILifetimeScope GetCurrentTenantScope()
         {
-            return GetTenantScope(GetCurrentTenant()?.Id);
+            return GetTenantScope(GetCurrentTenant()?.Identifier);
         }
 
         /// <summary>
         /// Get (configure on missing)
         /// </summary>
         /// <param name="tenantId"></param>
-        public ILifetimeScope GetTenantScope(Guid? tenantId)
+        public ILifetimeScope GetTenantScope(string tenantId)
         {
             //If no tenant (e.g. early on in the pipeline, we just use the application container)
-            if (!tenantId.HasValue || tenantId == Guid.Empty)
+            if (string.IsNullOrEmpty(tenantId))
                 return _applicationContainer;
 
-            var tenantIdString = tenantId.ToString();
-
             //If we have created a lifetime for a tenant, return
-            if (_tenantLifetimeScopes.ContainsKey(tenantIdString))
-                return _tenantLifetimeScopes[tenantIdString];
+            if (_tenantLifetimeScopes.ContainsKey(tenantId))
+                return _tenantLifetimeScopes[tenantId];
 
             lock (_lock)
             {
-                if (_tenantLifetimeScopes.ContainsKey(tenantIdString))
+                if (_tenantLifetimeScopes.ContainsKey(tenantId))
                 {
-                    return _tenantLifetimeScopes[tenantIdString];
+                    return _tenantLifetimeScopes[tenantId];
                 }
                 else
                 {
                     //This is a new tenant, configure a new lifetimescope for it using our tenant sensitive configuration method
-                    _tenantLifetimeScopes.Add(tenantIdString, _applicationContainer.BeginLifetimeScope(_multiTenantTag, a => _tenantContainerConfiguration(GetCurrentTenant(), a)));
-                    return _tenantLifetimeScopes[tenantIdString];
+                    _tenantLifetimeScopes.Add(tenantId, _applicationContainer.BeginLifetimeScope(_multiTenantTag, a => _tenantContainerConfiguration(GetCurrentTenant(), a)));
+                    return _tenantLifetimeScopes[tenantId];
                 }
             }
         }

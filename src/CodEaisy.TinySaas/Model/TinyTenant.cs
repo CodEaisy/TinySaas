@@ -7,9 +7,10 @@ namespace CodEaisy.TinySaas.Model
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
-
-        public string Host { get; set; }
+        /// <summary>
+        /// this should be obtainable from a request via the `ITenantResolutionStrategy`
+        /// </summary>
+        public string Identifier { get; set; }
 
         public bool Enabled { get; set; }
     }
