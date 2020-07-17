@@ -11,3 +11,4 @@
 **/bin
 **/obj
 .vscode/settings.json
+**/coverage

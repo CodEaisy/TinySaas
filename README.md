@@ -8,18 +8,22 @@ TinySaas is a C# library for building multitenant applications with .NET Core 3.
 
 ## Supported Use Cases
 
-- [x] Per-Tenant Services
-- [x] Shared Tenant Services
-- [x] Schema per Tenant (Data Isolation)
-- [x] Database per Tenant (Data Isolation)
-- [x] Shared Database (Data Isolation)
+- [x] Shared services
+- [x] Per-tenant services
+- [x] Schema per-tenant (Data Isolation)
+- [x] Database per-tenant (Data Isolation)
+- [x] Shared database (Data Isolation)
+- [x] Shared options
+- [x] Per-tenant options
+- [x] Shared Authentication and Authorization
+- [x] Per-tenant Authentication and Authorization
 
 ## Quickstart
 
 - Add dependency to [CodEaisy.TinySaas][nuget_link] from Nuget
 
 ```bash
-dotnet add package CodEaisy.TinySaas --version 1.0.0-rc4
+dotnet add package CodEaisy.TinySaas --version 1.0.0-rc5
 ```
 
 - In `Startup.cs`, add the following inside the `ConfigureServices` method.
@@ -32,11 +36,11 @@ dotnet add package CodEaisy.TinySaas --version 1.0.0-rc4
         // ...
 
         // OPTION 1
-        services.AddMultiTenancy<Tenant, TenantStore<Tenant>, TenantResolutionStrategy>();
+        services.AddMultitenancy<Tenant, TenantStore<Tenant>, TenantResolutionStrategy>();
 
         // OPTION 2
         // uses default `CodEaisy.TinySaas.Model.TinyTenant` as tenant model
-        services.AddMultiTenancy<TenantStore<TinyTenant>, TenantResolutionStrategy>();
+        services.AddMultitenancy<TenantStore<TinyTenant>, TenantResolutionStrategy>();
 
         // ...
 
@@ -82,16 +86,16 @@ dotnet add package CodEaisy.TinySaas --version 1.0.0-rc4
                 webBuilder.UseStartup<Startup>();
             })
             // OPTION 1: add multitenant support via TenantStartup class
-            .ConfigureMultiTenancy<TenantStartup, Tenant>();
+            .ConfigureMultitenancy<TenantStartup, Tenant>();
             // OPTION 2: add multitenant support via static method
-            .ConfigureMultiTenancy<Tenant>(ClassName.StaticMethodName);
+            .ConfigureMultitenancy<Tenant>(ClassName.StaticMethodName);
   ```
 
   **NOTE**:
   - `Tenant` must implement `CodEaisy.TinySaas.Interface`  `ITenant`.
   - `TenantStore` must implement `CodEaisy.TinySaas.Interface.ITenantStore`.
   - `TenantResolutionStrategy` must implement `CodEaisy.TinySaas.Interface.ITenantResolutionStrategy` respectively.
-  - `TenantStartup` must implement `IMultiTenantStartup`
+  - `TenantStartup` must implement `IMultitenantStartup`
   - `ClassName.StaticMethodName` must be of type `System.Action<TTenant, Autofac.ContainerBuilder>` where `TTenant` implements `ITenant`
 
 ## Requirements

@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/samples/WebApi/bin/Debug/net5.0/CodEaisy.TinySaas.Samples.WebApi.dll",
+            "program": "${workspaceFolder}/samples/WebApi/bin/Debug/netcoreapp3.1/CodEaisy.TinySaas.Samples.WebApi.dll",
             "args": [],
             "cwd": "${workspaceFolder}/samples/WebApi",
             "stopAtEntry": false,

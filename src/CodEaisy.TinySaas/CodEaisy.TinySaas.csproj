@@ -1,28 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>CodEaisy.TinySaas</AssemblyName>
+    <Title>CodEaisy.TinySaas</Title>
+    <PackageTags>saas;multitenancy</PackageTags>
+    <Description>A multitenancy enabler library for .NET</Description>
     <Authors>Mubarak Imam</Authors>
-    <Version>1.0.0-rc4</Version>
-    <RepositoryUrl>https://github.com/CodEaisy/TinySaas</RepositoryUrl>
-    <Company>CodEaisy Technology Services</Company>
-    <PublishDocumentationFile>true</PublishDocumentationFile>
-    <PackageId>CodEaisy.TinySaas</PackageId>
-    <PackageLicenseUrl>https://licenses.nuget.org/MIT</PackageLicenseUrl>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="5.2.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.2.2" />
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.4" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.7" />
   </ItemGroup>
 
 </Project>

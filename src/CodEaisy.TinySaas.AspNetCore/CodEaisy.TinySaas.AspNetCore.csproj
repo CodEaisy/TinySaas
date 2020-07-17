@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>CodEaisy.TinySaas.AspNetCore</AssemblyName>
+    <Title>CodEaisy.TinySaas.AspNetCore</Title>
+    <PackageTags>saas;multitenancy</PackageTags>
+    <Description>TinySaas ASP.NET Core extension library</Description>
+    <Authors>Mubarak Imam</Authors>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodEaisy.TinySaas\CodEaisy.TinySaas.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+  </ItemGroup>
+
+</Project>

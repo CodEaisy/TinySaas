@@ -1,28 +1,28 @@
 using System;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
-using CodEaisy.TinySaas.Core.Internals;
+using CodEaisy.TinySaas.Interfaces;
+using CodEaisy.TinySaas.Internals;
 using CodEaisy.TinySaas.Extensions;
-using CodEaisy.TinySaas.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace CodEaisy.TinySaas.Middlewares
 {
-    internal class MultiTenantContainerMiddleware<TTenant> where TTenant : class, ITenant
+    internal class MultitenantContainerMiddleware<TTenant> where TTenant : class, ITenant
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<MultiTenantContainerMiddleware<TTenant>> _logger;
+        private readonly ILogger<MultitenantContainerMiddleware<TTenant>> _logger;
 
-        public MultiTenantContainerMiddleware(RequestDelegate next,
-            ILogger<MultiTenantContainerMiddleware<TTenant>> logger)
+        public MultitenantContainerMiddleware(RequestDelegate next,
+            ILogger<MultitenantContainerMiddleware<TTenant>> logger)
         {
             _next = next;
             _logger = logger;
         }
 
         public async Task Invoke(HttpContext context,
-            Func<MultiTenantContainer<TTenant>> multiTenantContainerAccessor)
+            Func<MultitenantContainer<TTenant>> multiTenantContainerAccessor)
         {
             _logger.LogDebug("Setting up container for {tenant}", context.GetCurrentTenant<TTenant>());
             //Set to current tenant container.
