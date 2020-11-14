@@ -1,8 +1,7 @@
 # TinySaas
 
+[![Build](https://github.com/codeaisy/tinysaas/workflows/Build/badge.svg)](https://github.com/CodEaisy/TinySaas/actions?query=workflow%3ABuild)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CodEaisy_TinySaas&metric=coverage)](https://sonarcloud.io/dashboard?id=CodEaisy_TinySaas)
-[![Build](https://github.com/codeaisy/tinysaas/workflows/build/badge.svg)](https://github.com/CodEaisy/TinySaas/actions?query=workflow%3A%22build%22)
-[![Nuget](https://buildstats.info/nuget/codeaisy.tinysaas)](https://www.nuget.org/packages/CodEaisy.TinySaas)
 [![Nuget (with prereleases)](https://buildstats.info/nuget/codeaisy.tinysaas?includePreReleases=true)](https://www.nuget.org/packages/CodEaisy.TinySaas)
 
 TinySaas is a C# library for building multitenant applications with .NET Core 3.0+
@@ -24,7 +23,7 @@ TinySaas is a C# library for building multitenant applications with .NET Core 3.
 - Add dependency to [CodEaisy.TinySaas][nuget_link] from Nuget
 
 ```bash
-dotnet add package CodEaisy.TinySaas --version 1.0.0-rc5
+dotnet add package CodEaisy.TinySaas.AspNetCore --version 1.0.0
 ```
 
 - In `Startup.cs`, add the following inside the `ConfigureServices` method.
@@ -101,7 +100,7 @@ dotnet add package CodEaisy.TinySaas --version 1.0.0-rc5
 
 ## Requirements
 
-ASP.NET Core 3.0+
+ASP.NET Core 3.1+
 
 ## Changelog
 
