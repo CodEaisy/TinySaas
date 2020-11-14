@@ -2,7 +2,7 @@ test:
 	dotnet test "tests/CodEaisy.TinySaas.Tests" \
 		/p:CollectCoverage=true \
 		/p:CoverletOutputFormat=\"json,lcov,opencover\" \
-		/p:ExcludeByFile=\"**/CodEaisy.TinySaas/Ensure.cs\" \
+		/p:ExcludeByFile=\"**/CodEaisy.TinySaas/Ensure.cs,**/CodEaisy.TinySaas/Internals/MultiTenantContainer.cs,**/CodEaisy.TinySaas.Auth/Authorization/AuthorizationMiddlewareResultHandler.cs\" \
 		/p:CoverletOutput=\"../../coverage/\" \
 		/p:MergeWith=\"../../coverage/coverage.json\"
 
@@ -21,7 +21,7 @@ analyze_pr:
 	dotnet sonarscanner begin /k:"CodEaisy_TinySaas" /o:"codeaisy" \
           /d:sonar.login="${SONAR_TOKEN}" \
           /d:sonar.cs.opencover.reportsPaths="./coverage/coverage.opencover.xml" \
-		  /d:sonar.coverage.exclusions="**/CodEaisy.TinySaas/Ensure.cs" \
+		  /d:sonar.coverage.exclusions="**/CodEaisy.TinySaas/Ensure.cs,**/CodEaisy.TinySaas/Internals/MultiTenantContainer.cs,**/CodEaisy.TinySaas.Auth/Authorization/AuthorizationMiddlewareResultHandler.cs" \
           /d:sonar.pullrequest.key=${CHANGE_ID} \
           /d:sonar.host.url="https://sonarcloud.io"
 	dotnet build src
@@ -31,7 +31,7 @@ analyze_br:
 	dotnet sonarscanner begin /k:"CodEaisy_TinySaas" /o:"codeaisy" \
           /d:sonar.login="${SONAR_TOKEN}" \
           /d:sonar.cs.opencover.reportsPaths="./coverage/coverage.opencover.xml" \
-		  /d:sonar.coverage.exclusions="**/CodEaisy.TinySaas/Ensure.cs" \
+		  /d:sonar.coverage.exclusions="**/CodEaisy.TinySaas/Ensure.cs,**/CodEaisy.TinySaas/Internals/MultiTenantContainer.cs,**/CodEaisy.TinySaas.Auth/Authorization/AuthorizationMiddlewareResultHandler.cs" \
           /d:sonar.host.url="https://sonarcloud.io"
 	dotnet build src
 	dotnet sonarscanner end /d:sonar.login="${SONAR_TOKEN}"
