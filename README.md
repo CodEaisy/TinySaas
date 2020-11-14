@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/codeaisy/tinysaas/workflows/Build/badge.svg)](https://github.com/CodEaisy/TinySaas/actions?query=workflow%3ABuild)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CodEaisy_TinySaas&metric=coverage)](https://sonarcloud.io/dashboard?id=CodEaisy_TinySaas)
-[![Nuget (with prereleases)](https://buildstats.info/nuget/codeaisy.tinysaas?includePreReleases=true)](https://www.nuget.org/packages/CodEaisy.TinySaas)
+[![Nuget (with prereleases)](https://buildstats.info/nuget/codeaisy.tinysaas?includePreReleases=true)][nuget_link]
 
 TinySaas is a C# library for building multitenant applications with .NET Core 3.0+
 
@@ -116,5 +116,5 @@ Want to file a bug, contribute some code, or improve documentation? Excellent! R
 guidelines for [contributing][contributing] and then check out one of our issues in the [hotlist: community-help](https://github.com/codeaisy/tinysaas/labels/hotlist%3A%20community-help).
 
 [contributing]: https://github.com/codeaisy/tinysaas/blob/master/CONTRIBUTING.md
-[changelog]: https://github.com/angular/angular/blob/master/CHANGELOG.md
+[changelog]: https://github.com/codeaisy/tinysaas/blob/master/CHANGELOG.md
 [nuget_link]: https://www.nuget.org/packages/CodEaisy.TinySaas
