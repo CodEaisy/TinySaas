@@ -1,8 +1,9 @@
 # TinySaas
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/codeaisy/tinysaas/Build)
-![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/codeaisy.tinysaas)
-![Nuget](https://img.shields.io/nuget/dt/CodEaisy.TinySaas)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CodEaisy_TinySaas&metric=coverage)](https://sonarcloud.io/dashboard?id=CodEaisy_TinySaas)
+[![Build](https://github.com/codeaisy/tinysaas/workflows/build/badge.svg)](https://github.com/CodEaisy/TinySaas/actions?query=workflow%3A%22build%22)
+[![Nuget](https://buildstats.info/nuget/codeaisy.tinysaas)](https://www.nuget.org/packages/CodEaisy.TinySaas)
+[![Nuget (with prereleases)](https://buildstats.info/nuget/codeaisy.tinysaas?includePreReleases=true)](https://www.nuget.org/packages/CodEaisy.TinySaas)
 
 TinySaas is a C# library for building multitenant applications with .NET Core 3.0+
 
