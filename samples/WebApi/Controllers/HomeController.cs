@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using CodEaisy.TinySaas.Extensions;
-using CodEaisy.TinySaas.Interface;
+﻿using CodEaisy.TinySaas.Interfaces;
+using CodEaisy.TinySaas.Samples.WebApi.Authorization;
+using CodEaisy.TinySaas.Samples.WebApi.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodEaisy.TinySaas.Samples.WebApi.Controllers
@@ -10,31 +10,49 @@ namespace CodEaisy.TinySaas.Samples.WebApi.Controllers
     [Route("[controller]")]
     public class HomeController : ControllerBase
     {
-        private readonly TenantSingleton _singleton;
-        private readonly ITenantService<Tenant> _tenantService;
+        private readonly AppSingleton _appSingleton;
+        private readonly TenantSingleton _tenantSingleton;
+        private readonly AppScoped _appScoped;
+        private readonly ITenantAccessor<SimpleTenant> _tenantAccessor;
 
-        public HomeController(TenantSingleton singleton, ITenantService<Tenant> tenantService)
+        public HomeController(AppSingleton appSingleton, TenantSingleton tenantSingleton,
+            AppScoped appScoped, ITenantAccessor<SimpleTenant> tenantAccessor)
         {
-            _singleton = singleton;
-            _tenantService = tenantService;
+            _appSingleton = appSingleton;
+            _tenantSingleton = tenantSingleton;
+            _appScoped = appScoped;
+            _tenantAccessor = tenantAccessor;
         }
 
-        [HttpGet("tenant")]
-        public async Task<ActionResult> GetTenantName()
+        [HttpGet(nameof(Tenant))]
+        public ActionResult Tenant()
         {
-            var tenantFromService = await _tenantService.GetTenant();
-            var tenantFromContext = HttpContext.GetCurrentTenant<Tenant>();
-
-            return Ok(new {
-                NameFromContext = tenantFromContext.Identifier,
-                NameFromService = tenantFromService.Identifier,
-            });
+            return Ok(_tenantSingleton.GetTestValue());
         }
 
-        [HttpGet("singleton")]
-        public Guid TestTenantSingleton()
+        [HttpGet(nameof(App))]
+        public ActionResult App()
         {
-            return _singleton.GetTestValue();
+            return Ok(_appSingleton.GetValue());
+        }
+
+        [HttpGet(nameof(Scoped))]
+        public ActionResult Scoped()
+        {
+            return Ok(_appScoped.GetValues());
+        }
+
+        [HttpGet(nameof(Accessor))]
+        public ActionResult Accessor()
+        {
+            return Ok(_tenantAccessor.Tenant.Name);
+        }
+
+        [Authorize(Policy = Policies.SimpleAuth)]
+        [HttpGet(nameof(Authenticated))]
+        public ActionResult Authenticated()
+        {
+            return Ok(nameof(Authenticated));
         }
     }
 }

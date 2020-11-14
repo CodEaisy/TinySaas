@@ -1,0 +1,44 @@
+name: Test and Analyze
+
+on:
+  push:
+    branches: [ dev, main]
+  pull_request:
+    branches: [ dev, main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1.5.0
+      with:
+      # SDK version to use. Examples: 2.2.104, 3.1, 3.1.x
+        dotnet-version: 3.1.x
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '13' # The JDK version to make available on the path.
+        java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+        architecture: x64 # (x64 or x86) - defaults to x64
+    - name: Install dependencies
+      run: dotnet restore src
+    - name: Build
+      run: dotnet build src --configuration Release --no-restore
+    - name: Test
+      run: make test
+    - name: Install SonarScanner
+      run: dotnet tool install -g dotnet-sonarscanner
+    - name: Analyze PR
+      if: ${{ github.event_name == 'pull_request' }}
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        CHANGE_ID: ${{ github.event.pull_request.number }}
+      run: make analyze_pr
+    - name: Analyze BR
+      if: ${{ github.event_name == 'push' }}
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: make analyze_br

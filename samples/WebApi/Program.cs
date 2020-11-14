@@ -18,6 +18,6 @@ namespace CodEaisy.TinySaas.Samples.WebApi
                     webBuilder.UseStartup<Startup>();
                 })
                 // add multitenant support
-                .ConfigureMultiTenancy<MultiTenantStartup, Tenant>();
+                .ConfigureMultitenancy<MultitenantStartup, SimpleTenant>();
     }
 }

@@ -1,13 +1,19 @@
 namespace CodEaisy.TinySaas
 {
-    public static class MultiTenancyConstants
+    /// <summary>
+    /// common multitenancy helper constants
+    /// </summary>
+    public static class MultitenancyConstants
     {
-        public static string TenantContextKey { get; set; } = "App.Tenant";
+        /// <summary>
+        /// key for tenant context information in HttpContext.Items
+        /// </summary>
+        public const string TenantContextKey = "TINYSAAS.TENANTCONTEXT.KEY";
 
         /// <summary>
-        /// Has a default value of "AppTenantId"
-        /// You can change in Startup.ConfigureServices
+        /// key to be used when using header or query resolution strategies
+        /// change in Startup.ConfigureService if need be
         /// </summary>
-        public static string TenantIdKey { get; set; } = "AppTenantId";
+        public static string TenantIdKey { get; set; } = "TinySaasTenantId";
     }
 }

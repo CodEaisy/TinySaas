@@ -1,13 +1,15 @@
-using CodEaisy.TinySaas.Core.Resolvers;
-using CodEaisy.TinySaas.Core.Stores;
+using CodEaisy.TinySaas.Resolvers;
+using CodEaisy.TinySaas.Stores;
 using CodEaisy.TinySaas.Extensions;
-using CodEaisy.TinySaas.Middlewares;
-using CodEaisy.TinySaas.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using CodEaisy.TinySaas.MissingTenants;
+using CodEaisy.TinySaas.Samples.WebApi.Options;
+using CodEaisy.TinySaas.Samples.WebApi.Services;
+using CodEaisy.TinySaas.Authorization;
 
 namespace CodEaisy.TinySaas.Samples.WebApi
 {
@@ -25,11 +27,21 @@ namespace CodEaisy.TinySaas.Samples.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             // required to use ConfigTenancyStore
-            services.Configure<ConfigTenancyOptions<Tenant>>(Configuration.GetSection(_tenancyConfig));
+            services.AddOptions<ConfigTenancyOptions<SimpleTenant>>()
+                .Bind(Configuration.GetSection(_tenancyConfig));
 
             // add multitenancy support,
             // added Tenant Model, Tenant Store provider, and resolution strategy
-            services.AddMultiTenancy<Tenant, ConfigTenantStore<Tenant>, QueryResolutionStrategy>();
+            services.AddMultitenancy<SimpleTenant, ConfigTenantStore<SimpleTenant>, QueryResolutionStrategy>()
+                .AddPerTenantAuthorization();
+
+            // add app level option
+            services.AddOptions<AppOption>()
+                .Bind(Configuration.GetSection(AppOption.Key));
+
+            // add global singleton service
+            services.AddSingleton<AppSingleton>();
+            services.AddScoped<AppScoped>();
 
             services.AddControllers();
         }
@@ -43,13 +55,14 @@ namespace CodEaisy.TinySaas.Samples.WebApi
             }
 
             // enable multitenant support, with missing tenant handler and tenant container
-            app.UseMultitenancy<Tenant, RedirectMissingTenantHandler, RedirectMissingTenantOptions>(new RedirectMissingTenantOptions());
+            app.UseMultitenancy<SimpleTenant>()
+                .UseMissingTenantHandler<RedirectMissingTenantHandler, RedirectMissingTenantOptions>(options => options.RedirectUrl = "https://github.com/mimam419");
 
-            app.UseHttpsRedirection();
+            app.UsePerTenantAuthentication();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UsePerTenantAuthorization<SampleAuthorizationMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

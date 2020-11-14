@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Build
+name: Build and Release
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -20,11 +20,13 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1.5.0
       with:
       # SDK version to use. Examples: 2.2.104, 3.1, 3.1.x
-        dotnet-version: 5.0.100-preview.6.20318.15
+        dotnet-version: 3.1.x
     - name: Set env
       run: |
         wget http://ftp.us.debian.org/debian/pool/main/i/icu/libicu57_57.1-6+deb9u4_amd64.deb
@@ -34,8 +36,8 @@ jobs:
     - name: Build
       run: dotnet build src --configuration Release --no-restore
     - name: Pack
-      run: dotnet pack ./src/CodEaisy.TinySaas --no-restore --verbosity normal -o app
+      run: dotnet pack src -c Release --no-restore --verbosity normal -o app
     - name: Publish
-      run: dotnet nuget push app/CodEaisy.TinySaas.${RELEASE_VERSION:1}.nupkg -k ${NUGET_API_KEY} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "**/app/*.nupkg" -k ${NUGET_API_KEY} -s https://api.nuget.org/v3/index.json
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}

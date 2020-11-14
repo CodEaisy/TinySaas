@@ -1,32 +1,47 @@
+using System;
+using System.Security.Claims;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using CodEaisy.TinySaas.Interface;
+using CodEaisy.TinySaas.Interfaces;
+using CodEaisy.TinySaas.Samples.WebApi.Authentication;
+using CodEaisy.TinySaas.Samples.WebApi.Authorization;
+using CodEaisy.TinySaas.Samples.WebApi.Options;
+using CodEaisy.TinySaas.Samples.WebApi.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CodEaisy.TinySaas.Samples.WebApi
 {
-    public class MultiTenantStartup : IMultiTenantStartup<Tenant>
+    public class MultitenantStartup : IMultitenantStartup<SimpleTenant>
     {
-        public void ConfigureServices(Tenant tenant, ContainerBuilder container)
+        public void ConfigureServices(SimpleTenant tenant, ContainerBuilder container)
         {
             #region inbuilt DI pattern
-            // // to register services, you can either use inbuilt DI pattern
-            // // 1. create a service collection
-            // var services = new ServiceCollection();
+            // to register services, you can either use inbuilt DI pattern
+            // 1. create a service collection
+            var services = new ServiceCollection();
 
-            // // 2. register services to your service collection
-            // // tenant singleton, registers a single instance for each tenant
-            // services.AddSingleton<TenantSingleton>();
+            // 2. register services to your service collection
+            // tenant singleton, registers a single instance for each tenant
+            services.AddSingleton<TenantSingleton>();
 
-            // // 3. add the services into the container
-            // container.Populate(services);
-            #endregion
+            services.AddOptions<TenantOption>()
+                .Configure(options => {
+                    options.Value = Guid.NewGuid();
+                });
 
-            #region AutoFac pattern
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = SimpleAuthenticationOptions.DefaultScheme;
+                options.DefaultChallengeScheme = SimpleAuthenticationOptions.DefaultScheme;
+            }).AddSimpleAuth(options => options.AuthSecret = tenant.AuthSecret);
 
-            // or register the service on the container directly using AutoFac
-            container.RegisterType<TenantSingleton>().SingleInstance();
+            services.AddAuthorizationCore(options => {
+                options.AddPolicy(Policies.SimpleAuth, policy => {
+                    policy.RequireClaim(ClaimTypes.Actor);
+                });
+            });
 
+            // 3. add the services into the container
+            container.Populate(services);
             #endregion
         }
     }
