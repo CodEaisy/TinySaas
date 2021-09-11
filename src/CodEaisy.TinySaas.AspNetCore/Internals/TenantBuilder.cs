@@ -13,7 +13,7 @@ namespace CodEaisy.TinySaas.Internals
         public TenantBuilder(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
-            services.AddScoped<ITenantService<T>, TenantService<T>>();
+            services.AddSingleton<ITenantService<T>, TenantService<T>>();
             _services = services;
         }
 
@@ -21,10 +21,9 @@ namespace CodEaisy.TinySaas.Internals
         /// Register the tenant resolver implementation
         /// </summary>
         /// <typeparam name="V"></typeparam>
-        /// <param name="lifetime"></param>
-        public TenantBuilder<T> WithResolutionStrategy<V>(ServiceLifetime lifetime = ServiceLifetime.Transient) where V : ITenantResolutionStrategy
+        public TenantBuilder<T> WithResolutionStrategy<V>() where V : class,ITenantResolutionStrategy
         {
-            _services.Add(ServiceDescriptor.Describe(typeof(ITenantResolutionStrategy), typeof(V), lifetime));
+            _services.AddSingleton<ITenantResolutionStrategy, V>();
             return this;
         }
 
@@ -32,10 +31,9 @@ namespace CodEaisy.TinySaas.Internals
         /// Register the tenant store implementation
         /// </summary>
         /// <typeparam name="V"></typeparam>
-        /// <param name="lifetime"></param>
-        public TenantBuilder<T> WithStore<V>(ServiceLifetime lifetime = ServiceLifetime.Singleton) where V : ITenantStore<T>
+        public TenantBuilder<T> WithStore<V>() where V : class, ITenantStore<T>
         {
-            _services.Add(ServiceDescriptor.Describe(typeof(ITenantStore<T>), typeof(V), lifetime));
+            _services.AddSingleton<ITenantStore<T>, V>();
             return this;
         }
     }

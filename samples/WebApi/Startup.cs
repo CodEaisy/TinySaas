@@ -10,6 +10,8 @@ using CodEaisy.TinySaas.MissingTenants;
 using CodEaisy.TinySaas.Samples.WebApi.Options;
 using CodEaisy.TinySaas.Samples.WebApi.Services;
 using CodEaisy.TinySaas.Authorization;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace CodEaisy.TinySaas.Samples.WebApi
 {
