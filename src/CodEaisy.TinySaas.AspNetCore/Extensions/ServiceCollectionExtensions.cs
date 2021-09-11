@@ -15,10 +15,10 @@ namespace CodEaisy.TinySaas
         /// <param name="services"></param>
         public static IServiceCollection AddMultitenancy<TTenant, TTenantStore, TResolutionStrategy>(this IServiceCollection services)
             where TTenant : class, ITenant
-            where TTenantStore : ITenantStore<TTenant>
-            where TResolutionStrategy : ITenantResolutionStrategy
+            where TTenantStore : class, ITenantStore<TTenant>
+            where TResolutionStrategy : class, ITenantResolutionStrategy
         {
-            services.AddScoped<ITenantAccessor<TTenant>, TenantAccessor<TTenant>>();
+            services.AddSingleton<ITenantAccessor<TTenant>, TenantAccessor<TTenant>>();
 
             var tenantBuilder = new TenantBuilder<TTenant>(services);
             tenantBuilder.WithStore<TTenantStore>();
