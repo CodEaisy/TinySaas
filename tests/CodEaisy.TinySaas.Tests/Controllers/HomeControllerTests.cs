@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -19,7 +18,7 @@ namespace CodEaisy.TinySaas.Tests
         private readonly WebApplicationFactory<Startup> _factory;
         private readonly HttpClient _client;
 
-        private static string GetUrl(string method, string tenantId) => $"http://localhost:5000/home/{method}?{MultitenancyConstants.TenantIdKey}={tenantId}";
+        private static string GetUrl(string method, string tenantId) => $"http://localhost:5000/{method}?{MultitenancyConstants.TenantIdKey}={tenantId}";
 
         public HomeControllerTests(WebApplicationFactory<Startup> factory)
         {
@@ -144,10 +143,8 @@ namespace CodEaisy.TinySaas.Tests
             // Arrange
             const string tenantId = "e5353c3f-36bf-43ba-a3ca-6827fecfe558";
 
-            var url = $"http://localhost:5001/home/accessor?{MultitenancyConstants.TenantIdKey}={tenantId}";
-
             // Act
-            var response = await _client.GetAsync(url);
+            var response = await _client.GetAsync(GetUrl("accessor", tenantId));
 
             // Assert
             Assert.True(response.IsSuccessStatusCode);
@@ -158,7 +155,7 @@ namespace CodEaisy.TinySaas.Tests
         public async Task Authenticate_ShouldResolveWhenUserIsAuthenticated()
         {
             // Arrange
-            const string method = "authenticated";
+            const string method = "auth";
             const string tenantId = "e5353c3f-36bf-43ba-a3ca-6827fecfe558";
             _client.DefaultRequestHeaders.Add("Authorization", "notreallyasecret");
 
@@ -173,7 +170,7 @@ namespace CodEaisy.TinySaas.Tests
         public async Task Authenticate_ShouldReturn403_WhenUserTrespasses()
         {
             // Arrange
-            const string method = "authenticated";
+            const string method = "auth";
             const string tenantId = "f6811558-035f-48dd-9321-130f46cb94c6";
             _client.DefaultRequestHeaders.Add("Authorization", "notreallyasecret");
 
@@ -188,7 +185,7 @@ namespace CodEaisy.TinySaas.Tests
         public async Task Authenticate_ShouldReturn403_WhenEmptyAuthHeader()
         {
             // Arrange
-            const string method = "authenticated";
+            const string method = "auth";
             const string tenantId = "f6811558-035f-48dd-9321-130f46cb94c6";
             _client.DefaultRequestHeaders.Add("Authorization", new string[] {});
 

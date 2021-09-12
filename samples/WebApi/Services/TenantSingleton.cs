@@ -11,7 +11,7 @@ namespace CodEaisy.TinySaas.Samples.WebApi.Services
             _testValue = Guid.NewGuid();
         }
 
-        public Guid GetTestValue()
+        public Guid GetValue()
         {
             return _testValue;
         }

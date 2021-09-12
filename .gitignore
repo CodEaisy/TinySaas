@@ -12,3 +12,4 @@
 **/obj
 .vscode/settings.json
 **/coverage
+**/BenchmarkDotNet.Artifacts/
