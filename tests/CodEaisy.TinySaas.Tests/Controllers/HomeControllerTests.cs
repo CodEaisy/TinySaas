@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using CodEaisy.TinySaas.Samples.WebApi;
-using CodEaisy.TinySaas.Samples.WebApi.Services;
-using CodEaisy.TinySaas.Tests.Helpers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using CodEaisy.TinySaas.Samples.WebApi;
+using CodEaisy.TinySaas.Samples.WebApi.Services;
+using CodEaisy.TinySaas.Tests.Helpers;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -187,7 +187,6 @@ namespace CodEaisy.TinySaas.Tests
             // Arrange
             const string method = "auth";
             const string tenantId = "f6811558-035f-48dd-9321-130f46cb94c6";
-            _client.DefaultRequestHeaders.Add("Authorization", new string[] {});
 
             // Act
             var response = await _client.GetAsync(GetUrl(method, tenantId));
