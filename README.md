@@ -98,6 +98,36 @@ dotnet add package CodEaisy.TinySaas.AspNetCore --version 1.0.0
   - `TenantStartup` must implement `IMultitenantStartup`
   - `ClassName.StaticMethodName` must be of type `System.Action<TTenant, Autofac.ContainerBuilder>` where `TTenant` implements `ITenant`
 
+## Benchmarks
+
+Here, we show the performance report of an application singleton in a default ASP.NET application and an application singleton in a TinySaas ASP.NET application.
+
+``` ini
+BenchmarkDotNet=v0.13.1, OS=macOS Big Sur 11.5.2 (20G95) [Darwin 20.6.0]
+Intel Core i9-9880H CPU 2.30GHz, 1 CPU, 16 logical and 8 physical cores
+.NET SDK=5.0.400
+  [Host]        : .NET Core 3.1.5 (CoreCLR 4.700.20.26901, CoreFX 4.700.20.27001), X64 RyuJIT
+  .NET 5.0      : .NET 5.0.9 (5.0.921.35908), X64 RyuJIT
+  .NET Core 3.1 : .NET Core 3.1.5 (CoreCLR 4.700.20.26901, CoreFX 4.700.20.27001), X64 RyuJIT
+```
+
+### App Singleton in Default ASP.NET vs App Singleton in TinySaas
+
+|  Method |           Job |       Runtime | Instance |     Mean |    Error |   StdDev | Ratio | RatioSD |
+|-------- |-------------- |-------------- |--------- |---------:|---------:|---------:|------:|--------:|
+| HttpGet |      .NET 5.0 |      .NET 5.0 |  Default | 43.95 μs | 0.791 μs | 1.598 μs |  0.90 |    0.04 |
+| HttpGet | .NET Core 3.1 | .NET Core 3.1 |  Default | 50.06 μs | 0.979 μs | 1.088 μs |  1.00 |    0.00 |
+|         |               |               |          |          |          |          |       |         |
+| HttpGet |      .NET 5.0 |      .NET 5.0 | TinySaas | 64.24 μs | 0.291 μs | 0.272 μs |  0.92 |    0.03 |
+| HttpGet | .NET Core 3.1 | .NET Core 3.1 | TinySaas | 69.96 μs | 1.389 μs | 1.993 μs |  1.00 |    0.00 |
+
+### Tenant Singleton in TinySaas
+
+|  Method |           Job |       Runtime | Instance |     Mean |    Error |   StdDev | Ratio | RatioSD |
+|-------- |-------------- |-------------- |--------- |---------:|---------:|---------:|------:|--------:|
+| HttpGet |      .NET 5.0 |      .NET 5.0 | TinySaas | 64.89 μs | 0.237 μs | 0.185 μs |  0.88 |    0.02 |
+| HttpGet | .NET Core 3.1 | .NET Core 3.1 | TinySaas | 74.95 μs | 1.437 μs | 1.869 μs |  1.00 |    0.00 |
+
 ## Requirements
 
 ASP.NET Core 3.1+
