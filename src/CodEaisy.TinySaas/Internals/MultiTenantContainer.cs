@@ -98,23 +98,17 @@ namespace CodEaisy.TinySaas.Internals
         /// Get the current tenant from the application container
         /// </summary>
         /// <returns>currently resolved tenant</returns>
-        private T GetCurrentTenant()
-        {
-            //We have registered our TenantAccessService in Part 1, the service is available in the application container which allows us to access the current Tenant
-            return  _applicationContainer.Resolve<ITenantService<T>>()
-                .GetTenant()
-                .GetAwaiter()
-                .GetResult();
-        }
+        private T GetCurrentTenant() => _applicationContainer.Resolve<ITenantService<T>>()
+            .GetTenant()
+            .GetAwaiter()
+            .GetResult();
 
         /// <summary>
         /// Get the scope of the current tenant
         /// </summary>
         /// <returns>litetime scope</returns>
-        public ILifetimeScope GetCurrentTenantScope()
-        {
-            return GetTenantScope(GetCurrentTenant()?.Identifier);
-        }
+        public ILifetimeScope GetCurrentTenantScope() =>
+            GetTenantScope(GetCurrentTenant()?.Identifier);
 
         /// <summary>
         /// Get (configure on missing)
@@ -146,35 +140,22 @@ namespace CodEaisy.TinySaas.Internals
             }
         }
 
-        public ILifetimeScope BeginLifetimeScope()
-        {
-            return _applicationContainer.BeginLifetimeScope();
-        }
+        public ILifetimeScope BeginLifetimeScope() => _applicationContainer.BeginLifetimeScope();
 
-        public ILifetimeScope BeginLifetimeScope(object tag)
-        {
-            return _applicationContainer.BeginLifetimeScope(tag);
-        }
+        public ILifetimeScope BeginLifetimeScope(object tag) =>
+            _applicationContainer.BeginLifetimeScope(tag);
 
-        public ILifetimeScope BeginLifetimeScope(Action<ContainerBuilder> configurationAction)
-        {
-            return _applicationContainer.BeginLifetimeScope(configurationAction);
-        }
+        public ILifetimeScope BeginLifetimeScope(Action<ContainerBuilder> configurationAction) =>
+            _applicationContainer.BeginLifetimeScope(configurationAction);
 
-        public ILifetimeScope BeginLifetimeScope(object tag, Action<ContainerBuilder> configurationAction)
-        {
-            return _applicationContainer.BeginLifetimeScope(tag, configurationAction);
-        }
+        public ILifetimeScope BeginLifetimeScope(object tag,
+            Action<ContainerBuilder> configurationAction) =>
+            _applicationContainer.BeginLifetimeScope(tag, configurationAction);
 
-        public object ResolveComponent(ResolveRequest request)
-        {
-            return _applicationContainer.ResolveComponent(request);
-        }
+        public object ResolveComponent(ResolveRequest request) =>
+            _applicationContainer.ResolveComponent(request);
 
-        public ValueTask DisposeAsync()
-        {
-            return _applicationContainer.DisposeAsync();
-        }
+        public ValueTask DisposeAsync() => _applicationContainer.DisposeAsync();
 
         public void Dispose()
         {

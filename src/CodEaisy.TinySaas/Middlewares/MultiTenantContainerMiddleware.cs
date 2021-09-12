@@ -25,8 +25,8 @@ namespace CodEaisy.TinySaas.Middlewares
             Func<MultitenantContainer<TTenant>> multiTenantContainerAccessor)
         {
             _logger.LogDebug("Setting up container for {tenant}", context.GetCurrentTenant<TTenant>());
-            //Set to current tenant container.
-            //Begin new scope for request as ASP.NET Core standard scope is per-request
+            // Set to current tenant container.
+            // Begin new scope for request as ASP.NET Core standard scope is per-request
             context.RequestServices =
                 new AutofacServiceProvider(multiTenantContainerAccessor()
                         .GetCurrentTenantScope().BeginLifetimeScope());

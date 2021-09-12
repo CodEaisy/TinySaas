@@ -7,11 +7,11 @@ namespace CodEaisy.TinySaas.Samples.WebApi.Controllers
     [Route("[controller]")]
     public class AccessorController : ControllerBase
     {
-        private readonly ITenantAccessor<SimpleTenant> _accessor;
+        private readonly SimpleTenant _tenant;
 
-        public AccessorController(ITenantAccessor<SimpleTenant> accessor) => _accessor = accessor;
+        public AccessorController(SimpleTenant tenant) => _tenant = tenant;
 
         [HttpGet]
-        public ActionResult Index() => Ok(_accessor.Tenant.Name);
+        public ActionResult Index() => Ok(_tenant.Name);
     }
 }
