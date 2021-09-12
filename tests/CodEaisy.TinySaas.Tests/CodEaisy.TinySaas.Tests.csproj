@@ -25,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CodEaisy.TinySaas\CodEaisy.TinySaas.csproj" />
     <ProjectReference Include="..\..\samples\WebApi\CodEaisy.TinySaas.Samples.WebApi.csproj" />
   </ItemGroup>
 

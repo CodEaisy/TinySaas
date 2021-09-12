@@ -4,6 +4,7 @@
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
+    <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>

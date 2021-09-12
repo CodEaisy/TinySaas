@@ -9,10 +9,9 @@ namespace CodEaisy.TinySaas.Tests.Helpers
 {
     public static class AppFactoryExtensions
     {
-        public static WebApplicationFactory<Startup> UpdateDependencyInjection(this WebApplicationFactory<Startup> factory,
-            List<DependencyUpdate> dependencies)
-        {
-            return factory.WithWebHostBuilder(builder => {
+        public static WebApplicationFactory<Startup> UpdateDependencyInjection(
+            this WebApplicationFactory<Startup> factory, List<DependencyUpdate> dependencies) =>
+            factory.WithWebHostBuilder(builder => {
                 builder.ConfigureServices(services => {
                     foreach (var dep in dependencies)
                     {
@@ -23,7 +22,6 @@ namespace CodEaisy.TinySaas.Tests.Helpers
                     }
                 });
             });
-        }
     }
 
     public class DependencyUpdate

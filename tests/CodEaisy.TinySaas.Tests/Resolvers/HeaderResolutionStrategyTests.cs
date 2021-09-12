@@ -17,7 +17,7 @@ namespace CodEaisy.TinySaas.Tests.Resolvers
     {
         private readonly HttpClient _client;
         private readonly WebApplicationFactory<Startup> _factory;
-        private const string url = "http://localhost:5001/home/app";
+        private const string url = "http://localhost:5001/app";
 
         public HeaderResolutionStrategyTests(WebApplicationFactory<Startup> factory)
         {
