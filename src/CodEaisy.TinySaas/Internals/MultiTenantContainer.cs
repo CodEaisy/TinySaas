@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Core;
@@ -31,6 +32,8 @@ namespace CodEaisy.TinySaas.Internals
         public object Tag => _applicationContainer.Tag;
 
         public IComponentRegistry ComponentRegistry => _applicationContainer.ComponentRegistry;
+
+        public DiagnosticListener DiagnosticSource => _applicationContainer.DiagnosticSource;
 
         /// <summary>
         /// create a new instance of multitenant container
