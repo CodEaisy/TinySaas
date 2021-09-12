@@ -1,5 +1,7 @@
-using CodEaisy.TinySaas.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using CodEaisy.TinySaas.Extensions;
+using CodEaisy.TinySaas.Interfaces;
 using CodEaisy.TinySaas.Internals;
 
 namespace CodEaisy.TinySaas
@@ -18,7 +20,11 @@ namespace CodEaisy.TinySaas
             where TTenantStore : class, ITenantStore<TTenant>
             where TResolutionStrategy : class, ITenantResolutionStrategy
         {
-            services.AddSingleton<ITenantAccessor<TTenant>, TenantAccessor<TTenant>>();
+            services.AddSingleton<ITenant>(provider => provider
+                .GetRequiredService<IHttpContextAccessor>()
+                .HttpContext
+                .GetCurrentTenant<TTenant>());
+            services.AddSingleton(provider => (TTenant) provider.GetRequiredService<ITenant>());
 
             var tenantBuilder = new TenantBuilder<TTenant>(services);
             tenantBuilder.WithStore<TTenantStore>();
