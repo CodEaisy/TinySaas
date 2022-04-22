@@ -6,7 +6,7 @@ using CodEaisy.TinySaas.Extensions;
 using CodEaisy.TinySaas.MissingTenants;
 using CodEaisy.TinySaas.Resolvers;
 using CodEaisy.TinySaas.Stores;
-using TinySaasWebApi.Services;
+using Shared.Services;
 
 namespace TinySaasWebApi
 {

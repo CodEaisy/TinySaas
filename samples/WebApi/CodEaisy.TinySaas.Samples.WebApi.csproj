@@ -2,16 +2,17 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <TargetFramework>net5</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\CodEaisy.TinySaas\CodEaisy.TinySaas.csproj" />
     <ProjectReference Include="..\..\src\CodEaisy.TinySaas.AspNetCore\CodEaisy.TinySaas.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\CodEaisy.TinySaas.Auth\CodEaisy.TinySaas.Auth.csproj" />
   </ItemGroup>

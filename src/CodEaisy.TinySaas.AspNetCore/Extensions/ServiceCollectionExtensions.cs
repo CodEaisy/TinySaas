@@ -21,15 +21,18 @@ namespace CodEaisy.TinySaas
             where TResolutionStrategy : class, ITenantResolutionStrategy
         {
             services.AddSingleton<ITenant>(provider => provider
-                .GetRequiredService<IHttpContextAccessor>()
-                .HttpContext
-                .GetCurrentTenant<TTenant>());
-            services.AddSingleton(provider => (TTenant) provider.GetRequiredService<ITenant>());
+                    .GetRequiredService<IHttpContextAccessor>()
+                    .HttpContext.GetCurrentTenant<TTenant>())
+                .AddSingleton(provider => (TTenant) provider.GetRequiredService<ITenant>())
+                .AddTenantBuilder<TTenant>()
+                .WithStore<TTenantStore>()
+                .WithResolutionStrategy<TResolutionStrategy>();
 
-            var tenantBuilder = new TenantBuilder<TTenant>(services);
-            tenantBuilder.WithStore<TTenantStore>();
-            tenantBuilder.WithResolutionStrategy<TResolutionStrategy>();
             return services;
         }
+        
+        private static TenantBuilder<TTenant> AddTenantBuilder<TTenant>(this IServiceCollection services)
+            where TTenant: class, ITenant
+            => new TenantBuilder<TTenant>(services); 
     }
 }

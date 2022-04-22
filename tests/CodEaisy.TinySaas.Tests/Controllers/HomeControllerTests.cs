@@ -22,7 +22,7 @@ namespace CodEaisy.TinySaas.Tests
 
         public HomeControllerTests(WebApplicationFactory<Startup> factory)
         {
-            _factory = _factory = factory.UpdateDependencyInjection(new List<DependencyUpdate> {
+            _factory = factory.UpdateDependencyInjection(new List<DependencyUpdate> {
                 new DependencyUpdate(typeof(ILoggerFactory), typeof(NullLoggerFactory))
             });
             _client = _factory.CreateClient(new WebApplicationFactoryClientOptions

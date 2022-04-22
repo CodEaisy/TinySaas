@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Services;
 
-namespace DefaultWebApi
+namespace OrchardCoreWebApi
 {
     public class Startup
     {
@@ -16,21 +16,23 @@ namespace DefaultWebApi
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
             // add global singleton service
             services.AddSingleton<AppSingleton>();
-
-            services.AddControllers();
+            
+            // add orchardcore
+            services.AddOrchardCore()
+                .AddMvc()
+                .WithTenants();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseStaticFiles();
+            // use orchardcore
+            app.UseOrchardCore();
         }
     }
 }

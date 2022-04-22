@@ -1,3 +1,6 @@
+benchmark:
+	dotnet run --project "benchmarks/Benchmarks/Benchmarks.csproj" -c Release -f netcoreapp3.1 net5.0 net6.0 --runtimes netcoreapp3.1 net5.0 net6.0
+
 test:
 	dotnet test "tests/CodEaisy.TinySaas.Tests" \
 		/p:CollectCoverage=true \

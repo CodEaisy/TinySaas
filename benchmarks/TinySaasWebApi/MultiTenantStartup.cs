@@ -1,7 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using CodEaisy.TinySaas.Interfaces;
-using TinySaasWebApi.Services;
+using Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace TinySaasWebApi
