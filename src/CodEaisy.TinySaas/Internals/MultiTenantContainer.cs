@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Autofac;
@@ -22,9 +22,8 @@ namespace CodEaisy.TinySaas.Internals
         private readonly Action<T, ContainerBuilder> _tenantContainerConfiguration;
 
         //This dictionary keeps track of all of the tenant scopes that we have created
-        private readonly Dictionary<string, ILifetimeScope> _tenantLifetimeScopes = new Dictionary<string, ILifetimeScope>();
+        private readonly ConcurrentDictionary<string, ILifetimeScope> _tenantLifetimeScopes = new ConcurrentDictionary<string, ILifetimeScope>();
 
-        private readonly object _lock = new object();
         private const string _multiTenantTag = "multitenantcontainer";
 
         public IDisposer Disposer => _applicationContainer.Disposer;
@@ -122,21 +121,19 @@ namespace CodEaisy.TinySaas.Internals
                 return _applicationContainer;
 
             //If we have created a lifetime for a tenant, return
-            if (_tenantLifetimeScopes.ContainsKey(tenantId))
-                return _tenantLifetimeScopes[tenantId];
-
-            lock (_lock)
+            if (_tenantLifetimeScopes.TryGetValue(tenantId, out var tenantScope))
+                return tenantScope;
+            else
             {
-                if (_tenantLifetimeScopes.ContainsKey(tenantId))
-                {
-                    return _tenantLifetimeScopes[tenantId];
-                }
-                else
-                {
-                    //This is a new tenant, configure a new lifetimescope for it using our tenant sensitive configuration method
-                    _tenantLifetimeScopes.Add(tenantId, _applicationContainer.BeginLifetimeScope(_multiTenantTag, a => _tenantContainerConfiguration(GetCurrentTenant(), a)));
-                    return _tenantLifetimeScopes[tenantId];
-                }
+                //This is a new tenant, configure a new lifetimescope for it using our tenant sensitive configuration method
+                var tenantLifetimeScope = _applicationContainer.BeginLifetimeScope(_multiTenantTag, a => _tenantContainerConfiguration(GetCurrentTenant(), a));
+                
+                if (_tenantLifetimeScopes.TryGetValue(tenantId, out var scope))
+                    return scope;
+                
+                _tenantLifetimeScopes.TryAdd(tenantId, tenantLifetimeScope);
+                
+                return _tenantLifetimeScopes[tenantId];
             }
         }
 
@@ -167,12 +164,9 @@ namespace CodEaisy.TinySaas.Internals
         {
             if (disposing)
             {
-                lock (_lock)
-                {
-                    foreach (var scope in _tenantLifetimeScopes)
-                        scope.Value.Dispose();
-                    _applicationContainer.Dispose();
-                }
+                foreach (var scope in _tenantLifetimeScopes)
+                    scope.Value.Dispose();
+                _applicationContainer.Dispose();
             }
         }
     }

@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace CodEaisy.TinySaas
 {
-	using System.Diagnostics;
+    using System.Diagnostics;
 
-	/// <summary>
+    /// <summary>
     /// Helper class that will throw exceptions when conditions are not satisfied.
     /// </summary>
     [DebuggerStepThrough]
