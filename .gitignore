@@ -13,3 +13,5 @@
 .vscode/settings.json
 **/coverage
 **/BenchmarkDotNet.Artifacts/
+.idea
+.DS_Store

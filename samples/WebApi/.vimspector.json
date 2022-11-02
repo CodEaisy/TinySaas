@@ -1,0 +1,20 @@
+ {
+   "configurations": {
+     "attach": {
+       "adapter": "netcoredbg",
+       "configuration": {
+         "request": "attach",
+         "processId": "${pid}"
+       }
+     },
+     "launch": {
+       "adapter": "netcoredbg",
+       "configuration": {
+         "request": "launch",
+         "program": "/Users/mubarakimam/Projects/CodEaisy/TinySaas/samples/WebApi/bin/Debug/net6.0/CodEaisy.TinySaas.Samples.WebApi.dll",
+         "args": [],
+         "stopAtEntry": true
+       }
+     }
+   }
+ }

@@ -17,8 +17,16 @@ namespace CodEaisy.TinySaas.Tests.Helpers
                     foreach (var dep in dependencies)
                     {
                         var existingService = services.SingleOrDefault(d => d.ServiceType == dep.Definition);
-                        services.Add(new ServiceDescriptor(dep.Definition, dep.Implementation,
-                            existingService.Lifetime));
+                        if (existingService is not null)
+                        {
+                            services.Add(new ServiceDescriptor(dep.Definition, dep.Implementation,
+                                existingService.Lifetime));
+                        }
+                        else
+                        {
+                            services.Add(new ServiceDescriptor(dep.Definition, dep.Implementation,
+                                ServiceLifetime.Singleton));
+                        }
                     }
                 });
             });
