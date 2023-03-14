@@ -20,11 +20,11 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
       # SDK version to use. Examples: 2.2.104, 3.1, 3.1.x
-        dotnet-version: 5.0.x
+        dotnet-version: 7.0.x
     - uses: actions/setup-java@v1
       with:
         java-version: '13' # The JDK version to make available on the path.
-        java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+        java-package: jre # (jre, jdk, or jdk+fx) - defaults to jdk
         architecture: x64 # (x64 or x86) - defaults to x64
     - name: Install dependencies
       run: dotnet restore src

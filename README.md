@@ -1,10 +1,10 @@
 # TinySaas
 
-[![Build](https://github.com/codeaisy/tinysaas/workflows/Build/badge.svg)](https://github.com/CodEaisy/TinySaas/actions?query=workflow%3ABuild)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CodEaisy_TinySaas&metric=coverage)](https://sonarcloud.io/dashboard?id=CodEaisy_TinySaas)
+[![Build]([build_badge])][build_link]
+[![Coverage]([coverage_badge])][coverage_link]
 [Nuget (with prereleases)][nuget_link]
 
-TinySaas is a C# library for building multitenant applications with .NET Core 3.0+
+TinySaas is a C# library for building multitenant applications with .NET 6.0+, version 1.0 supports .NET Core 3.1+
 
 ## Supported Use Cases
 
@@ -23,7 +23,7 @@ TinySaas is a C# library for building multitenant applications with .NET Core 3.
 - Add dependency to [CodEaisy.TinySaas][nuget_link] from Nuget
 
 ```bash
-dotnet add package CodEaisy.TinySaas.AspNetCore --version 1.0.0
+dotnet add package CodEaisy.TinySaas.AspNetCore --version 2.0.0
 ```
 
 - In `Startup.cs`, add the following inside the `ConfigureServices` method.
@@ -75,6 +75,7 @@ dotnet add package CodEaisy.TinySaas.AspNetCore --version 1.0.0
       // ...
   }
   ```
+
 - In `Program.cs`, add the following in the `CreateHostBuilder` method.
 
   ```csharp
@@ -102,47 +103,38 @@ dotnet add package CodEaisy.TinySaas.AspNetCore --version 1.0.0
 
 Here, we show the performance report of an application singleton in a default ASP.NET application and an application singleton in a TinySaas ASP.NET application.
 
-```ini
-BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19044.1645 (21H2)
-Intel Core i7-10750H CPU 2.60GHz, 1 CPU, 12 logical and 6 physical cores
-.NET SDK=6.0.104
-  [Host]        : .NET Core 3.1.24 (CoreCLR 4.700.22.16002, CoreFX 4.700.22.17909), X64 RyuJIT
-  .NET 5.0      : .NET 5.0.16 (5.0.1622.16705), X64 RyuJIT
-  .NET 6.0      : .NET 6.0.4 (6.0.422.16404), X64 RyuJIT
-  .NET Core 3.1 : .NET Core 3.1.24 (CoreCLR 4.700.22.16002, CoreFX 4.700.22.17909), X64 RyuJIT
+``` ini
+
+BenchmarkDotNet=v0.13.5, OS=macOS Ventura 13.2 (22D49) [Darwin 22.3.0]
+Apple M1 Pro, 1 CPU, 10 logical and 10 physical cores
+.NET SDK=7.0.102
+  [Host]   : .NET 6.0.14 (6.0.1423.7309), Arm64 RyuJIT AdvSIMD
+  .NET 6.0 : .NET 6.0.14 (6.0.1423.7309), Arm64 RyuJIT AdvSIMD
+  .NET 7.0 : .NET 7.0.2 (7.0.222.60605), Arm64 RyuJIT AdvSIMD
+
 ```
 
 ### App Singleton in Default ASP.NET vs TinySaas vs OrchardCore
 
-```ini
-|  Method |           Job |       Runtime |    Instance |     Mean |    Error |   StdDev |   Median | Ratio | RatioSD |  Gen 0 |  Gen 1 | Allocated |
-|-------- |-------------- |-------------- |------------ |---------:|---------:|---------:|---------:|------:|--------:|-------:|-------:|----------:|
-| HttpGet |      .NET 5.0 |      .NET 5.0 |     Default | 44.85 μs | 0.888 μs | 1.795 μs | 44.52 μs |  0.88 |    0.07 | 2.1362 | 0.0610 |     13 KB |
-| HttpGet |      .NET 6.0 |      .NET 6.0 |     Default | 36.95 μs | 0.709 μs | 0.728 μs | 36.74 μs |  0.68 |    0.03 | 1.7090 |      - |     11 KB |
-| HttpGet | .NET Core 3.1 | .NET Core 3.1 |     Default | 51.25 μs | 1.016 μs | 2.511 μs | 51.18 μs |  1.00 |    0.00 | 2.1973 |      - |     14 KB |
-|         |               |               |             |          |          |          |          |       |         |        |        |           |
-| HttpGet |      .NET 5.0 |      .NET 5.0 | OrchardCore | 74.14 μs | 1.463 μs | 1.566 μs | 74.18 μs |  0.97 |    0.02 | 3.0518 |      - |     19 KB |
-| HttpGet |      .NET 6.0 |      .NET 6.0 | OrchardCore | 64.73 μs | 0.719 μs | 0.672 μs | 64.79 μs |  0.84 |    0.02 | 2.9297 |      - |     18 KB |
-| HttpGet | .NET Core 3.1 | .NET Core 3.1 | OrchardCore | 76.75 μs | 1.132 μs | 1.059 μs | 76.67 μs |  1.00 |    0.00 | 3.1738 | 0.2441 |     20 KB |
-|         |               |               |             |          |          |          |          |       |         |        |        |           |
-| HttpGet |      .NET 5.0 |      .NET 5.0 |    TinySaas | 61.34 μs | 1.210 μs | 2.388 μs | 60.22 μs |  0.91 |    0.03 | 3.6621 | 0.1221 |     23 KB |
-| HttpGet |      .NET 6.0 |      .NET 6.0 |    TinySaas | 55.07 μs | 0.670 μs | 0.594 μs | 54.92 μs |  0.80 |    0.01 | 3.4180 | 0.1221 |     21 KB |
-| HttpGet | .NET Core 3.1 | .NET Core 3.1 |    TinySaas | 69.18 μs | 0.677 μs | 0.601 μs | 69.23 μs |  1.00 |    0.00 | 3.7842 | 0.1221 |     23 KB |
-```
+|      Method |      Job |  Runtime |     Mean |    Error |   StdDev | Ratio | RatioSD |    Gen0 |   Gen1 | Allocated | Alloc Ratio |
+|------------ |--------- |--------- |---------:|---------:|---------:|------:|--------:|--------:|-------:|----------:|------------:|
+|     Default | .NET 6.0 | .NET 6.0 | 49.50 μs | 1.541 μs | 4.470 μs |  1.00 |    0.00 |  5.1270 |      - |  10.65 KB |        1.00 |
+| OrchardCore | .NET 6.0 | .NET 6.0 | 65.73 μs | 1.300 μs | 3.514 μs |  1.35 |    0.15 |  8.7891 |      - |  17.85 KB |        1.68 |
+|    TinySaas | .NET 6.0 | .NET 6.0 | 55.80 μs | 1.109 μs | 1.853 μs |  1.14 |    0.10 | 10.2539 |      - |  20.83 KB |        1.96 |
+|             |          |          |          |          |          |       |         |         |        |           |             |
+|     Default | .NET 7.0 | .NET 7.0 | 32.15 μs | 0.686 μs | 1.923 μs |  1.00 |    0.00 |  1.7090 |      - |  10.45 KB |        1.00 |
+| OrchardCore | .NET 7.0 | .NET 7.0 | 60.42 μs | 2.173 μs | 6.338 μs |  1.89 |    0.24 |  2.6855 |      - |  17.38 KB |        1.66 |
+|    TinySaas | .NET 7.0 | .NET 7.0 | 52.87 μs | 1.132 μs | 3.231 μs |  1.65 |    0.15 |  3.2959 | 0.1221 |  20.63 KB |        1.97 |
 
 ### Tenant Singleton in TinySaas vs OrchardCore
 
-```ini
-|  Method |           Job |       Runtime |    Instance |     Mean |    Error |   StdDev | Ratio | RatioSD |  Gen 0 |  Gen 1 | Allocated |
-|-------- |-------------- |-------------- |------------ |---------:|---------:|---------:|------:|--------:|-------:|-------:|----------:|
-| HttpGet |      .NET 5.0 |      .NET 5.0 | OrchardCore | 76.53 μs | 1.508 μs | 2.114 μs |  1.03 |    0.03 | 3.0518 |      - |     19 KB |
-| HttpGet |      .NET 6.0 |      .NET 6.0 | OrchardCore | 65.40 μs | 1.281 μs | 1.258 μs |  0.86 |    0.02 | 2.9297 |      - |     18 KB |
-| HttpGet | .NET Core 3.1 | .NET Core 3.1 | OrchardCore | 75.71 μs | 0.729 μs | 0.682 μs |  1.00 |    0.00 | 3.1738 |      - |     20 KB |
-|         |               |               |             |          |          |          |       |         |        |        |           |
-| HttpGet |      .NET 5.0 |      .NET 5.0 |    TinySaas | 63.72 μs | 1.265 μs | 1.406 μs |  0.90 |    0.02 | 3.6621 | 0.1221 |     23 KB |
-| HttpGet |      .NET 6.0 |      .NET 6.0 |    TinySaas | 54.72 μs | 0.613 μs | 0.543 μs |  0.77 |    0.02 | 3.4180 | 0.1221 |     21 KB |
-| HttpGet | .NET Core 3.1 | .NET Core 3.1 |    TinySaas | 71.04 μs | 1.380 μs | 1.589 μs |  1.00 |    0.00 | 3.7842 | 0.1221 |     23 KB |
-```
+|      Method |      Job |  Runtime |     Mean |    Error |   StdDev | Ratio | RatioSD |    Gen0 |   Gen1 | Allocated | Alloc Ratio |
+|------------ |--------- |--------- |---------:|---------:|---------:|------:|--------:|--------:|-------:|----------:|------------:|
+| OrchardCore | .NET 6.0 | .NET 6.0 | 64.79 μs | 1.279 μs | 2.029 μs |  1.00 |    0.00 |  8.7891 |      - |   17.9 KB |        1.00 |
+|    TinySaas | .NET 6.0 | .NET 6.0 | 54.52 μs | 1.081 μs | 2.547 μs |  0.85 |    0.05 | 10.2539 |      - |  20.85 KB |        1.16 |
+|             |          |          |          |          |          |       |         |         |        |           |             |
+| OrchardCore | .NET 7.0 | .NET 7.0 | 59.70 μs | 1.185 μs | 3.036 μs |  1.00 |    0.00 |  2.8076 |      - |  17.44 KB |        1.00 |
+|    TinySaas | .NET 7.0 | .NET 7.0 | 51.37 μs | 1.060 μs | 3.057 μs |  0.87 |    0.07 |  3.2959 | 0.1221 |  20.65 KB |        1.18 |
 
 ## Requirements
 
@@ -164,3 +156,7 @@ guidelines for [contributing][contributing] and then check out one of our issues
 [contributing]: https://github.com/codeaisy/tinysaas/blob/master/CONTRIBUTING.md
 [changelog]: https://github.com/codeaisy/tinysaas/blob/master/CHANGELOG.md
 [nuget_link]: https://www.nuget.org/packages/CodEaisy.TinySaas
+[coverage_badge]: https://sonarcloud.io/api/project_badges/measure?project=CodEaisy_TinySaas&metric=coverage
+[coverage_link]: https://sonarcloud.io/dashboard?id=CodEaisy_TinySaas
+[build_link]: https://github.com/CodEaisy/TinySaas/actions?query=workflow%3ABuild
+[build_badge]: https://github.com/codeaisy/tinysaas/workflows/Build/badge.svg

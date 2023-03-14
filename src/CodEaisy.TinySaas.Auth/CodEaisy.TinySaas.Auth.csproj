@@ -5,7 +5,7 @@
     <PackageTags>saas;authz</PackageTags>
     <Description>A set of authentication helpers for TinySaas</Description>
     <Authors>Mubarak Imam</Authors>
-    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

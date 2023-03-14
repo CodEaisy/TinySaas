@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Runtime.Loader;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Core;
@@ -50,15 +51,9 @@ namespace CodEaisy.TinySaas.Internals
         /// </summary>
         public event EventHandler<LifetimeScopeBeginningEventArgs> ChildLifetimeScopeBeginning
         {
-            add
-            {
-                _applicationContainer.ChildLifetimeScopeBeginning += value;
-            }
+            add => _applicationContainer.ChildLifetimeScopeBeginning += value;
 
-            remove
-            {
-                _applicationContainer.ChildLifetimeScopeBeginning -= value;
-            }
+            remove => _applicationContainer.ChildLifetimeScopeBeginning -= value;
         }
 
         /// <summary>
@@ -66,15 +61,9 @@ namespace CodEaisy.TinySaas.Internals
         /// </summary>
         public event EventHandler<LifetimeScopeEndingEventArgs> CurrentScopeEnding
         {
-            add
-            {
-                _applicationContainer.CurrentScopeEnding += value;
-            }
+            add => _applicationContainer.CurrentScopeEnding += value;
 
-            remove
-            {
-                _applicationContainer.CurrentScopeEnding -= value;
-            }
+            remove => _applicationContainer.CurrentScopeEnding -= value;
         }
 
         /// <summary>
@@ -82,15 +71,9 @@ namespace CodEaisy.TinySaas.Internals
         /// </summary>
         public event EventHandler<ResolveOperationBeginningEventArgs> ResolveOperationBeginning
         {
-            add
-            {
-                _applicationContainer.ResolveOperationBeginning += value;
-            }
+            add => _applicationContainer.ResolveOperationBeginning += value;
 
-            remove
-            {
-                _applicationContainer.ResolveOperationBeginning -= value;
-            }
+            remove => _applicationContainer.ResolveOperationBeginning -= value;
         }
 
         /// <summary>
@@ -156,5 +139,9 @@ namespace CodEaisy.TinySaas.Internals
                 _applicationContainer.Dispose();
             }
         }
+
+        public ILifetimeScope BeginLoadContextLifetimeScope(AssemblyLoadContext loadContext, Action<ContainerBuilder> configurationAction) => _applicationContainer.BeginLoadContextLifetimeScope(loadContext, configurationAction);
+
+        public ILifetimeScope BeginLoadContextLifetimeScope(object tag, AssemblyLoadContext loadContext, Action<ContainerBuilder> configurationAction) => _applicationContainer.BeginLoadContextLifetimeScope(tag, loadContext, configurationAction);
     }
 }

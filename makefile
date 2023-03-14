@@ -1,5 +1,5 @@
 benchmark:
-	dotnet run --project "benchmarks/Benchmarks/Benchmarks.csproj" -c Release -f netcoreapp3.1 net5.0 net6.0 --runtimes netcoreapp3.1 net5.0 net6.0
+	dotnet run --project "benchmarks/Benchmarks/Benchmarks.csproj" -c Release -f net6.0 net7.0 --runtimes net6.0 net7.0
 
 test:
 	dotnet test "tests/CodEaisy.TinySaas.Tests" \
@@ -7,9 +7,9 @@ test:
 		/p:CoverletOutputFormat=\"json,lcov,opencover\" \
 		/p:ExcludeByFile=\"**/CodEaisy.TinySaas/Ensure.cs,**/CodEaisy.TinySaas/Internals/MultiTenantContainer.cs,**/CodEaisy.TinySaas.Auth/Authorization/AuthorizationMiddlewareResultHandler.cs\" \
 		/p:CoverletOutput=\"../../coverage/\" \
-		/p:MergeWith=\"../../coverage/coverage.json\"
+		/p:MergeWith=\"../../coverage/coverage.net7.0.json\"
 
-	rm coverage/coverage.json
+	rm coverage/coverage.net7.0.json
 
 visualize_coverage:
 	make test

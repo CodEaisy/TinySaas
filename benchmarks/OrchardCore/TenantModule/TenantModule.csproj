@@ -1,19 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-      <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+      <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
       <OutputType>Library</OutputType>
       <IsPackable>true</IsPackable>
       <PackageVersion>1.0.0</PackageVersion>
       <GenerateDocumentationFile>false</GenerateDocumentationFile>
     </PropertyGroup>
     
-    <ItemGroup Condition="$(TargetFramework) == 'net6.0'">
-        <PackageReference Include="OrchardCore.Module.Targets" Version="1.3.0" />
-    </ItemGroup>
-      
-    <ItemGroup Condition="$(TargetFramework) != 'net6.0'">
-        <PackageReference Include="OrchardCore.Module.Targets" Version="1.2.2" />
+    <ItemGroup>
+        <PackageReference Include="OrchardCore.Module.Targets" Version="1.5.0" />
     </ItemGroup>
     
     <ItemGroup>

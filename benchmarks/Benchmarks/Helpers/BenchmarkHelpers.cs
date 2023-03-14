@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using System;
 
 namespace Benchmarks.Helpers
 {
@@ -15,10 +16,10 @@ namespace Benchmarks.Helpers
             "f6811558-035f-48dd-9321-130f46cb94c6"
         };
         
-        public static HttpClientWrapper<TStartup> GetHttpClientWrapper<TStartup>(string displayName)
-            where TStartup : class => GetHttpClientWrapper<TStartup, HttpClientWrapper<TStartup>>(displayName);
+        public static HttpClientWrapper<TStartup> GetHttpClientWrapper<TStartup>(string displayName, bool baseline = false)
+            where TStartup : class => GetHttpClientWrapper<TStartup, HttpClientWrapper<TStartup>>(displayName, baseline);
 
-        public static HttpClientWrapper<TStartup> GetHttpClientWrapper<TStartup, TWrapper>(string displayName)
+        public static HttpClientWrapper<TStartup> GetHttpClientWrapper<TStartup, TWrapper>(string displayName, bool baseline = false)
             where TWrapper : HttpClientWrapper<TStartup>, new()
             where TStartup : class
         {
@@ -30,7 +31,8 @@ namespace Benchmarks.Helpers
                     builder.ConfigureTestServices(services => {
                         services.AddSingleton<ILoggerFactory, NullLoggerFactory>();
                     });
-                })
+                }),
+                Baseline = baseline
             };
         }
     }
@@ -38,21 +40,32 @@ namespace Benchmarks.Helpers
     public interface IHttpClientWrapper
     {
         string Name { get; }
+        bool? Baseline { get; }
         Task Call(string path, string tenant);
     }
 
-    public class HttpClientWrapper<TStartup> : IHttpClientWrapper where TStartup : class
+    public class HttpClientWrapper<TStartup> : IHttpClientWrapper, IDisposable where TStartup : class
     {
+        private WebApplicationFactory<TStartup> _clientFactory;
+        private HttpClient __httpClient;
         public string Name { get; set; }
+        public bool? Baseline { get; set; }
         public WebApplicationFactory<TStartup> ClientFactory
         {
-            set => _httpClient = value.CreateClient(new WebApplicationFactoryClientOptions
-                {
-                    AllowAutoRedirect = false
-                });
+            set => _clientFactory = value;
         }
         public override string ToString() => Name;
-        private HttpClient _httpClient;
+        private HttpClient _httpClient {
+            get {
+                if (__httpClient == null) {
+                    __httpClient = _clientFactory.CreateClient(new WebApplicationFactoryClientOptions
+                    {
+                        AllowAutoRedirect = false
+                    });
+                }
+                return __httpClient;
+            }
+        }
         
         protected async Task Call(string url)
         {
@@ -61,6 +74,20 @@ namespace Benchmarks.Helpers
         }
         
         public virtual Task Call(string method, string tenantId) => Call($"https://localhost:5001/{method}");
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _clientFactory.Dispose();
+            }
+        }
     }
     
     public class TinySaasClient : HttpClientWrapper<TinySaasWebApi.Startup>
