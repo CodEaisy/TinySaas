@@ -19,8 +19,7 @@
 
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <LangVersion>8.0</LangVersion>
-    
-    <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+    <MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
     <MinVerTagPrefix>v</MinVerTagPrefix>
   </PropertyGroup>
 

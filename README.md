@@ -1,8 +1,8 @@
 # TinySaas
 
-[![Build]([build_badge])][build_link]
-[![Coverage]([coverage_badge])][coverage_link]
-[Nuget (with prereleases)][nuget_link]
+[![Build][build_badge]][build_link] &ensp;
+[![Coverage][coverage_badge]][coverage_link] &ensp;
+[![Nuget (with prereleases)][nuget_badge]][nuget_link]
 
 TinySaas is a C# library for building multitenant applications with .NET 6.0+, version 1.0 supports .NET Core 3.1+
 
@@ -91,6 +91,16 @@ dotnet add package CodEaisy.TinySaas.AspNetCore --version 2.0.0
             .ConfigureMultitenancy<Tenant>(ClassName.StaticMethodName);
   ```
 
+  If using minimal APIs, you can add multitenany support by doing the following:
+
+  ```csharp
+  // added multitenancy to Host builder
+  // OPTION 1: add multitenant support via TenantStartup class
+  builder.Host.ConfigureMultitenancy<TenantStartup, Tenant>();
+  // OPTION 2: add multitenant support via static method
+  builder.Host.ConfigureMultitenancy<Tenant>(ClassName.StaticMethodName);
+  ```
+
   **NOTE**:
 
   - `Tenant` must implement `CodEaisy.TinySaas.Interface`  `ITenant`.
@@ -156,7 +166,8 @@ guidelines for [contributing][contributing] and then check out one of our issues
 [contributing]: https://github.com/codeaisy/tinysaas/blob/master/CONTRIBUTING.md
 [changelog]: https://github.com/codeaisy/tinysaas/blob/master/CHANGELOG.md
 [nuget_link]: https://www.nuget.org/packages/CodEaisy.TinySaas
-[coverage_badge]: https://sonarcloud.io/api/project_badges/measure?project=CodEaisy_TinySaas&metric=coverage
+[nuget_badge]: https://buildstats.info/nuget/codeaisy.tinysaas?includePreReleases=true
 [coverage_link]: https://sonarcloud.io/dashboard?id=CodEaisy_TinySaas
-[build_link]: https://github.com/CodEaisy/TinySaas/actions?query=workflow%3ABuild
-[build_badge]: https://github.com/codeaisy/tinysaas/workflows/Build/badge.svg
+[coverage_badge]: https://sonarcloud.io/api/project_badges/measure?project=CodEaisy_TinySaas&metric=coverage
+[build_link]: https://github.com/codEaisy/tinysaas/actions/workflows/release.yml
+[build_badge]: https://github.com/codEaisy/tinysaas/actions/workflows/release.yml/badge.svg

@@ -1,4 +1,3 @@
-using System;
 using System.Security.Claims;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -7,7 +6,6 @@ using CodEaisy.TinySaas.Samples.WebApi.Authentication;
 using CodEaisy.TinySaas.Samples.WebApi.Authorization;
 using CodEaisy.TinySaas.Samples.WebApi.Options;
 using CodEaisy.TinySaas.Samples.WebApi.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace CodEaisy.TinySaas.Samples.WebApi
 {

@@ -13,13 +13,13 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace CodEaisy.TinySaas.Tests.Resolvers
 {
-    public class HeaderResolutionStrategyTests : IClassFixture<WebApplicationFactory<Startup>>
+    public class HeaderResolutionStrategyTests : IClassFixture<WebApplicationFactory<MultitenantStartup>>
     {
         private readonly HttpClient _client;
-        private readonly WebApplicationFactory<Startup> _factory;
+        private readonly WebApplicationFactory<MultitenantStartup> _factory;
         private const string url = "http://localhost:5001/app";
 
-        public HeaderResolutionStrategyTests(WebApplicationFactory<Startup> factory)
+        public HeaderResolutionStrategyTests(WebApplicationFactory<MultitenantStartup> factory)
         {
             _factory = factory.UpdateDependencyInjection(new List<DependencyUpdate> {
                 new DependencyUpdate(typeof(ITenantResolutionStrategy), typeof(HeaderResolutionStrategy)),
