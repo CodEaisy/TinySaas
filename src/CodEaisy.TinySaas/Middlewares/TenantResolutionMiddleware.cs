@@ -11,7 +11,7 @@ namespace CodEaisy.TinySaas.Middlewares
     /// tenant resolution middleware
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class TenantResolutionMiddleware<T> where T : ITenant
+    public class TenantResolutionMiddleware<T> where T : class, ITenant
     {
         /// <summary>
         /// request delegate

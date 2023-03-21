@@ -13,7 +13,7 @@ TinySaas is a C# library for building multitenant applications with .NET 6.0+, v
 - [X] Schema per-tenant (Data Isolation)
 - [X] Database per-tenant (Data Isolation)
 - [X] Shared database (Data Isolation)
-- [X] Shared options
+- [X] Shared config options
 - [X] Per-tenant options
 - [X] Shared Authentication and Authorization
 - [X] Per-tenant Authentication and Authorization
@@ -158,10 +158,9 @@ ASP.NET Core 3.1+
 
 [Gunnar Peipman](https://gunnarpeipman.com/) and [Michael McKenna](https://michael-mckenna.com/) for their awesome works on Saas in ASP.NET Core.
 
-## Want to help ?
+## Want to help?
 
-Want to file a bug, contribute some code, or improve documentation? Excellent! Read up on our
-guidelines for [contributing][contributing] and then check out one of our issues in the [hotlist: community-help](https://github.com/codeaisy/tinysaas/labels/hotlist%3A%20community-help).
+Want to file a bug, contribute some code, or improve the documentation? Excellent! Read up on our guidelines for [contributing][contributing] and then check out one of our issues in the [hotlist: community-help](https://github.com/codeaisy/tinysaas/labels/hotlist%3A%20community-help).
 
 [contributing]: https://github.com/codeaisy/tinysaas/blob/master/CONTRIBUTING.md
 [changelog]: https://github.com/codeaisy/tinysaas/blob/master/CHANGELOG.md
