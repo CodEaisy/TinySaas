@@ -3,23 +3,29 @@
 ### tenant singleton
 
 ### tenant 1
-GET https://localhost:5001/home/tenant?TinySaasTenantId=e5353c3f-36bf-43ba-a3ca-6827fecfe558 HTTP/1.1
+GET https://localhost:5001/accessor/full?TinySaasTenantId=e5353c3f-36bf-43ba-a3ca-6827fecfe558 HTTP/1.1
 
 ### tenant 2
-GET https://localhost:5001/home/tenant?TinySaasTenantId=f6811558-035f-48dd-9321-130f46cb94c6 HTTP/1.1
+GET https://localhost:5001/accessor/full?TinySaasTenantId=f6811558-035f-48dd-9321-130f46cb94c6 HTTP/1.1
+
+### tenant 1
+GET https://localhost:5001/tenant?TinySaasTenantId=e5353c3f-36bf-43ba-a3ca-6827fecfe558 HTTP/1.1
+
+### tenant 2
+GET https://localhost:5001/tenant?TinySaasTenantId=f6811558-035f-48dd-9321-130f46cb94c6 HTTP/1.1
 
 ### app singleton
 ### tenant 1
-GET https://localhost:5001/home/app?TinySaasTenantId=e5353c3f-36bf-43ba-a3ca-6827fecfe558 HTTP/1.1
+GET https://localhost:5001/app?TinySaasTenantId=e5353c3f-36bf-43ba-a3ca-6827fecfe558 HTTP/1.1
 
 ### tenant 2
-GET https://localhost:5001/home/app?TinySaasTenantId=f6811558-035f-48dd-9321-130f46cb94c6 HTTP/1.1
+GET https://localhost:5001/app?TinySaasTenantId=f6811558-035f-48dd-9321-130f46cb94c6 HTTP/1.1
 
 ### auth
 ### tenant 1
-GET https://localhost:5001/home/authenticated?TinySaasTenantId=e5353c3f-36bf-43ba-a3ca-6827fecfe558 HTTP/1.1
+GET https://localhost:5001/auth?TinySaasTenantId=e5353c3f-36bf-43ba-a3ca-6827fecfe558 HTTP/1.1
 Authorization: notreallyasecret
 
 ### tenant 2
-GET https://localhost:5001/home/authenticated?TinySaasTenantId=f6811558-035f-48dd-9321-130f46cb94c6 HTTP/1.1
+GET https://localhost:5001/auth?TinySaasTenantId=f6811558-035f-48dd-9321-130f46cb94c6 HTTP/1.1
 Authorization: thisisaverybigsecret

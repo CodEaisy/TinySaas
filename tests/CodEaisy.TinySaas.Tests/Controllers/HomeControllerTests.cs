@@ -13,16 +13,16 @@ using Xunit;
 
 namespace CodEaisy.TinySaas.Tests
 {
-    public class HomeControllerTests : IClassFixture<WebApplicationFactory<Startup>>
+    public class HomeControllerTests : IClassFixture<WebApplicationFactory<MultitenantStartup>>
     {
-        private readonly WebApplicationFactory<Startup> _factory;
+        private readonly WebApplicationFactory<MultitenantStartup> _factory;
         private readonly HttpClient _client;
 
         private static string GetUrl(string method, string tenantId) => $"http://localhost:5000/{method}?{MultitenancyConstants.TenantIdKey}={tenantId}";
 
-        public HomeControllerTests(WebApplicationFactory<Startup> factory)
+        public HomeControllerTests(WebApplicationFactory<MultitenantStartup> factory)
         {
-            _factory = _factory = factory.UpdateDependencyInjection(new List<DependencyUpdate> {
+            _factory = factory.UpdateDependencyInjection(new List<DependencyUpdate> {
                 new DependencyUpdate(typeof(ILoggerFactory), typeof(NullLoggerFactory))
             });
             _client = _factory.CreateClient(new WebApplicationFactoryClientOptions

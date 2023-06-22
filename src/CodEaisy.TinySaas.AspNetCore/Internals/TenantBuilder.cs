@@ -12,9 +12,14 @@ namespace CodEaisy.TinySaas.Internals
 
         public TenantBuilder(IServiceCollection services)
         {
-            services.AddHttpContextAccessor();
-            services.AddSingleton<ITenantService<T>, TenantService<T>>();
             _services = services;
+            Initialize();
+        }
+        
+        private void Initialize()
+        {
+            _services.AddHttpContextAccessor()
+                .AddSingleton<ITenantService<T>, TenantService<T>>();
         }
 
         /// <summary>

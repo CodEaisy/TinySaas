@@ -1,6 +1,6 @@
 using System;
 
-namespace DefaultWebApi.Services
+namespace Shared.Services
 {
     public class AppSingleton
     {

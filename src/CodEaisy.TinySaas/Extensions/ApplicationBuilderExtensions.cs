@@ -14,7 +14,8 @@ namespace CodEaisy.TinySaas.Extensions
         /// </summary>
         /// <param name="app"></param>
         /// <typeparam name="TTenant"></typeparam>
-        internal static IApplicationBuilder UseMultitenantContainer<TTenant>(this IApplicationBuilder app) where TTenant : class, ITenant
+        internal static IApplicationBuilder UseMultitenantContainer<TTenant>(this IApplicationBuilder app)
+            where TTenant : class, ITenant
             => app.UseMiddleware<MultitenantContainerMiddleware<TTenant>>()
                 .UseTenantResolutionMiddleware<TTenant>();
 
@@ -24,7 +25,7 @@ namespace CodEaisy.TinySaas.Extensions
         /// <param name="app"></param>
         /// <typeparam name="TTenant"></typeparam>
         internal static IApplicationBuilder UseTenantResolutionMiddleware<TTenant>(this IApplicationBuilder app)
-            where TTenant : ITenant
+            where TTenant : class, ITenant
             => app.UseMiddleware<TenantResolutionMiddleware<TTenant>>();
 
         #region UseMultitenancy

@@ -3,22 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using CodEaisy.TinySaas.Samples.WebApi;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CodEaisy.TinySaas.Tests.Helpers
 {
     public static class AppFactoryExtensions
     {
-        public static WebApplicationFactory<Startup> UpdateDependencyInjection(
-            this WebApplicationFactory<Startup> factory, List<DependencyUpdate> dependencies) =>
+        public static WebApplicationFactory<MultitenantStartup> UpdateDependencyInjection(
+            this WebApplicationFactory<MultitenantStartup> factory, List<DependencyUpdate> dependencies) =>
             factory.WithWebHostBuilder(builder => {
-                builder.ConfigureServices(services => {
+                builder.ConfigureTestServices(services => {
                     foreach (var dep in dependencies)
                     {
                         var existingService = services.SingleOrDefault(d => d.ServiceType == dep.Definition);
-                        services.Remove(existingService);
-                        services.Add(new ServiceDescriptor(dep.Definition, dep.Implementation,
-                            existingService.Lifetime));
+                        if (existingService is not null)
+                        {
+                            services.Add(new ServiceDescriptor(dep.Definition, dep.Implementation,
+                                existingService.Lifetime));
+                        }
+                        else
+                        {
+                            services.Add(new ServiceDescriptor(dep.Definition, dep.Implementation,
+                                ServiceLifetime.Singleton));
+                        }
                     }
                 });
             });

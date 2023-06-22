@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CodEaisy.TinySaas.Samples.WebApi": {
+    "https": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",

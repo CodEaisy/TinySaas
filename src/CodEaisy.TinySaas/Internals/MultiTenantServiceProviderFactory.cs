@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace CodEaisy.TinySaas.Internals
 {
     internal class MultitenantServiceProviderFactory<TTenant> : IServiceProviderFactory<ContainerBuilder>
-        where TTenant : ITenant
+        where TTenant : class, ITenant
     {
         public Action<TTenant, ContainerBuilder> _tenantServicesConfiguration;
 

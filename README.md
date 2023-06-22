@@ -1,29 +1,29 @@
 # TinySaas
 
-[![Build](https://github.com/codeaisy/tinysaas/workflows/Build/badge.svg)](https://github.com/CodEaisy/TinySaas/actions?query=workflow%3ABuild)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CodEaisy_TinySaas&metric=coverage)](https://sonarcloud.io/dashboard?id=CodEaisy_TinySaas)
-[![Nuget (with prereleases)](https://buildstats.info/nuget/codeaisy.tinysaas?includePreReleases=true)][nuget_link]
+[![Build][build_badge]][build_link] &ensp;
+[![Coverage][coverage_badge]][coverage_link] &ensp;
+[![Nuget (with prereleases)][nuget_badge]][nuget_link]
 
-TinySaas is a C# library for building multitenant applications with .NET Core 3.0+
+TinySaas is a C# library for building multitenant applications with .NET 6.0+, version 1.0 supports .NET Core 3.1+
 
 ## Supported Use Cases
 
-- [x] Shared services
-- [x] Per-tenant services
-- [x] Schema per-tenant (Data Isolation)
-- [x] Database per-tenant (Data Isolation)
-- [x] Shared database (Data Isolation)
-- [x] Shared options
-- [x] Per-tenant options
-- [x] Shared Authentication and Authorization
-- [x] Per-tenant Authentication and Authorization
+- [X] Shared services
+- [X] Per-tenant services
+- [X] Schema per-tenant (Data Isolation)
+- [X] Database per-tenant (Data Isolation)
+- [X] Shared database (Data Isolation)
+- [X] Shared config options
+- [X] Per-tenant options
+- [X] Shared Authentication and Authorization
+- [X] Per-tenant Authentication and Authorization
 
 ## Quickstart
 
 - Add dependency to [CodEaisy.TinySaas][nuget_link] from Nuget
 
 ```bash
-dotnet add package CodEaisy.TinySaas.AspNetCore --version 1.0.0
+dotnet add package CodEaisy.TinySaas.AspNetCore --version 2.0.0
 ```
 
 - In `Startup.cs`, add the following inside the `ConfigureServices` method.
@@ -91,7 +91,18 @@ dotnet add package CodEaisy.TinySaas.AspNetCore --version 1.0.0
             .ConfigureMultitenancy<Tenant>(ClassName.StaticMethodName);
   ```
 
+  If using minimal APIs, you can add multitenany support by doing the following:
+
+  ```csharp
+  // added multitenancy to Host builder
+  // OPTION 1: add multitenant support via TenantStartup class
+  builder.Host.ConfigureMultitenancy<TenantStartup, Tenant>();
+  // OPTION 2: add multitenant support via static method
+  builder.Host.ConfigureMultitenancy<Tenant>(ClassName.StaticMethodName);
+  ```
+
   **NOTE**:
+
   - `Tenant` must implement `CodEaisy.TinySaas.Interface`  `ITenant`.
   - `TenantStore` must implement `CodEaisy.TinySaas.Interface.ITenantStore`.
   - `TenantResolutionStrategy` must implement `CodEaisy.TinySaas.Interface.ITenantResolutionStrategy` respectively.
@@ -103,30 +114,37 @@ dotnet add package CodEaisy.TinySaas.AspNetCore --version 1.0.0
 Here, we show the performance report of an application singleton in a default ASP.NET application and an application singleton in a TinySaas ASP.NET application.
 
 ``` ini
-BenchmarkDotNet=v0.13.1, OS=macOS Big Sur 11.5.2 (20G95) [Darwin 20.6.0]
-Intel Core i9-9880H CPU 2.30GHz, 1 CPU, 16 logical and 8 physical cores
-.NET SDK=5.0.400
-  [Host]        : .NET Core 3.1.5 (CoreCLR 4.700.20.26901, CoreFX 4.700.20.27001), X64 RyuJIT
-  .NET 5.0      : .NET 5.0.9 (5.0.921.35908), X64 RyuJIT
-  .NET Core 3.1 : .NET Core 3.1.5 (CoreCLR 4.700.20.26901, CoreFX 4.700.20.27001), X64 RyuJIT
+
+BenchmarkDotNet=v0.13.5, OS=macOS Ventura 13.2 (22D49) [Darwin 22.3.0]
+Apple M1 Pro, 1 CPU, 10 logical and 10 physical cores
+.NET SDK=7.0.102
+  [Host]   : .NET 6.0.14 (6.0.1423.7309), Arm64 RyuJIT AdvSIMD
+  .NET 6.0 : .NET 6.0.14 (6.0.1423.7309), Arm64 RyuJIT AdvSIMD
+  .NET 7.0 : .NET 7.0.2 (7.0.222.60605), Arm64 RyuJIT AdvSIMD
+
 ```
 
-### App Singleton in Default ASP.NET vs App Singleton in TinySaas
+### App Singleton in Default ASP.NET vs TinySaas vs OrchardCore
 
-|  Method |           Job |       Runtime | Instance |     Mean |    Error |   StdDev | Ratio | RatioSD |
-|-------- |-------------- |-------------- |--------- |---------:|---------:|---------:|------:|--------:|
-| HttpGet |      .NET 5.0 |      .NET 5.0 |  Default | 43.95 μs | 0.791 μs | 1.598 μs |  0.90 |    0.04 |
-| HttpGet | .NET Core 3.1 | .NET Core 3.1 |  Default | 50.06 μs | 0.979 μs | 1.088 μs |  1.00 |    0.00 |
-|         |               |               |          |          |          |          |       |         |
-| HttpGet |      .NET 5.0 |      .NET 5.0 | TinySaas | 64.24 μs | 0.291 μs | 0.272 μs |  0.92 |    0.03 |
-| HttpGet | .NET Core 3.1 | .NET Core 3.1 | TinySaas | 69.96 μs | 1.389 μs | 1.993 μs |  1.00 |    0.00 |
+|      Method |      Job |  Runtime |     Mean |    Error |   StdDev | Ratio | RatioSD |    Gen0 |   Gen1 | Allocated | Alloc Ratio |
+|------------ |--------- |--------- |---------:|---------:|---------:|------:|--------:|--------:|-------:|----------:|------------:|
+|     Default | .NET 6.0 | .NET 6.0 | 49.50 μs | 1.541 μs | 4.470 μs |  1.00 |    0.00 |  5.1270 |      - |  10.65 KB |        1.00 |
+| OrchardCore | .NET 6.0 | .NET 6.0 | 65.73 μs | 1.300 μs | 3.514 μs |  1.35 |    0.15 |  8.7891 |      - |  17.85 KB |        1.68 |
+|    TinySaas | .NET 6.0 | .NET 6.0 | 55.80 μs | 1.109 μs | 1.853 μs |  1.14 |    0.10 | 10.2539 |      - |  20.83 KB |        1.96 |
+|             |          |          |          |          |          |       |         |         |        |           |             |
+|     Default | .NET 7.0 | .NET 7.0 | 32.15 μs | 0.686 μs | 1.923 μs |  1.00 |    0.00 |  1.7090 |      - |  10.45 KB |        1.00 |
+| OrchardCore | .NET 7.0 | .NET 7.0 | 60.42 μs | 2.173 μs | 6.338 μs |  1.89 |    0.24 |  2.6855 |      - |  17.38 KB |        1.66 |
+|    TinySaas | .NET 7.0 | .NET 7.0 | 52.87 μs | 1.132 μs | 3.231 μs |  1.65 |    0.15 |  3.2959 | 0.1221 |  20.63 KB |        1.97 |
 
-### Tenant Singleton in TinySaas
+### Tenant Singleton in TinySaas vs OrchardCore
 
-|  Method |           Job |       Runtime | Instance |     Mean |    Error |   StdDev | Ratio | RatioSD |
-|-------- |-------------- |-------------- |--------- |---------:|---------:|---------:|------:|--------:|
-| HttpGet |      .NET 5.0 |      .NET 5.0 | TinySaas | 64.89 μs | 0.237 μs | 0.185 μs |  0.88 |    0.02 |
-| HttpGet | .NET Core 3.1 | .NET Core 3.1 | TinySaas | 74.95 μs | 1.437 μs | 1.869 μs |  1.00 |    0.00 |
+|      Method |      Job |  Runtime |     Mean |    Error |   StdDev | Ratio | RatioSD |    Gen0 |   Gen1 | Allocated | Alloc Ratio |
+|------------ |--------- |--------- |---------:|---------:|---------:|------:|--------:|--------:|-------:|----------:|------------:|
+| OrchardCore | .NET 6.0 | .NET 6.0 | 64.79 μs | 1.279 μs | 2.029 μs |  1.00 |    0.00 |  8.7891 |      - |   17.9 KB |        1.00 |
+|    TinySaas | .NET 6.0 | .NET 6.0 | 54.52 μs | 1.081 μs | 2.547 μs |  0.85 |    0.05 | 10.2539 |      - |  20.85 KB |        1.16 |
+|             |          |          |          |          |          |       |         |         |        |           |             |
+| OrchardCore | .NET 7.0 | .NET 7.0 | 59.70 μs | 1.185 μs | 3.036 μs |  1.00 |    0.00 |  2.8076 |      - |  17.44 KB |        1.00 |
+|    TinySaas | .NET 7.0 | .NET 7.0 | 51.37 μs | 1.060 μs | 3.057 μs |  0.87 |    0.07 |  3.2959 | 0.1221 |  20.65 KB |        1.18 |
 
 ## Requirements
 
@@ -140,11 +158,15 @@ ASP.NET Core 3.1+
 
 [Gunnar Peipman](https://gunnarpeipman.com/) and [Michael McKenna](https://michael-mckenna.com/) for their awesome works on Saas in ASP.NET Core.
 
-## Want to help ?
+## Want to help?
 
-Want to file a bug, contribute some code, or improve documentation? Excellent! Read up on our
-guidelines for [contributing][contributing] and then check out one of our issues in the [hotlist: community-help](https://github.com/codeaisy/tinysaas/labels/hotlist%3A%20community-help).
+Want to file a bug, contribute some code, or improve the documentation? Excellent! Read up on our guidelines for [contributing][contributing] and then check out one of our issues in the [hotlist: community-help](https://github.com/codeaisy/tinysaas/labels/hotlist%3A%20community-help).
 
 [contributing]: https://github.com/codeaisy/tinysaas/blob/master/CONTRIBUTING.md
 [changelog]: https://github.com/codeaisy/tinysaas/blob/master/CHANGELOG.md
 [nuget_link]: https://www.nuget.org/packages/CodEaisy.TinySaas
+[nuget_badge]: https://buildstats.info/nuget/codeaisy.tinysaas?includePreReleases=true
+[coverage_link]: https://sonarcloud.io/dashboard?id=CodEaisy_TinySaas
+[coverage_badge]: https://sonarcloud.io/api/project_badges/measure?project=CodEaisy_TinySaas&metric=coverage
+[build_link]: https://github.com/codEaisy/tinysaas/actions/workflows/release.yml
+[build_badge]: https://github.com/codEaisy/tinysaas/actions/workflows/release.yml/badge.svg

@@ -1,17 +1,11 @@
-﻿using TinySaasWebApi.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Shared.Controllers;
+using Shared.Services;
 
 namespace TinySaasWebApi.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class TenantController : ControllerBase
+    public class TenantController : TenantControllerBase
     {
-        private readonly TenantSingleton _tenantSingleton;
-
-        public TenantController(TenantSingleton appSingleton) => _tenantSingleton = appSingleton;
-
-        [HttpGet]
-        public ActionResult Index() => Ok(_tenantSingleton.GetValue());
+        public TenantController(TenantSingleton tenantSingleton): base(tenantSingleton)
+         { }
     }
 }

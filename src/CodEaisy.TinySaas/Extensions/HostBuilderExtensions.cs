@@ -19,7 +19,7 @@ namespace CodEaisy.TinySaas.Extensions
         /// <typeparam name="TTenant"></typeparam>
         public static IHostBuilder ConfigureMultitenancy<TMultitenantStartup, TTenant>(this IHostBuilder hostBuilder)
             where TMultitenantStartup : class, IMultitenantStartup<TTenant>, new()
-            where TTenant : ITenant
+            where TTenant : class, ITenant
         {
             var multitenantStartup = new TMultitenantStartup();
             hostBuilder.ConfigureMultitenancy<TTenant>(multitenantStartup.ConfigureServices);
@@ -34,7 +34,7 @@ namespace CodEaisy.TinySaas.Extensions
         /// <typeparam name="TTenant"></typeparam>
         public static IHostBuilder ConfigureMultitenancy<TTenant>(this IHostBuilder hostBuilder,
             Action<TTenant, ContainerBuilder> tenantServicesConfiguration)
-            where TTenant : ITenant
+            where TTenant : class, ITenant
         {
             hostBuilder.UseServiceProviderFactory(new MultitenantServiceProviderFactory<TTenant>(tenantServicesConfiguration));
 

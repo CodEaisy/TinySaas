@@ -1,6 +1,7 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Runtime.Loader;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Core;
@@ -22,9 +23,8 @@ namespace CodEaisy.TinySaas.Internals
         private readonly Action<T, ContainerBuilder> _tenantContainerConfiguration;
 
         //This dictionary keeps track of all of the tenant scopes that we have created
-        private readonly Dictionary<string, ILifetimeScope> _tenantLifetimeScopes = new Dictionary<string, ILifetimeScope>();
+        private readonly ConcurrentDictionary<string, Lazy<ILifetimeScope>> _tenantLifetimeScopes = new ConcurrentDictionary<string, Lazy<ILifetimeScope>>();
 
-        private readonly object _lock = new object();
         private const string _multiTenantTag = "multitenantcontainer";
 
         public IDisposer Disposer => _applicationContainer.Disposer;
@@ -51,15 +51,9 @@ namespace CodEaisy.TinySaas.Internals
         /// </summary>
         public event EventHandler<LifetimeScopeBeginningEventArgs> ChildLifetimeScopeBeginning
         {
-            add
-            {
-                _applicationContainer.ChildLifetimeScopeBeginning += value;
-            }
+            add => _applicationContainer.ChildLifetimeScopeBeginning += value;
 
-            remove
-            {
-                _applicationContainer.ChildLifetimeScopeBeginning -= value;
-            }
+            remove => _applicationContainer.ChildLifetimeScopeBeginning -= value;
         }
 
         /// <summary>
@@ -67,15 +61,9 @@ namespace CodEaisy.TinySaas.Internals
         /// </summary>
         public event EventHandler<LifetimeScopeEndingEventArgs> CurrentScopeEnding
         {
-            add
-            {
-                _applicationContainer.CurrentScopeEnding += value;
-            }
+            add => _applicationContainer.CurrentScopeEnding += value;
 
-            remove
-            {
-                _applicationContainer.CurrentScopeEnding -= value;
-            }
+            remove => _applicationContainer.CurrentScopeEnding -= value;
         }
 
         /// <summary>
@@ -83,15 +71,9 @@ namespace CodEaisy.TinySaas.Internals
         /// </summary>
         public event EventHandler<ResolveOperationBeginningEventArgs> ResolveOperationBeginning
         {
-            add
-            {
-                _applicationContainer.ResolveOperationBeginning += value;
-            }
+            add => _applicationContainer.ResolveOperationBeginning += value;
 
-            remove
-            {
-                _applicationContainer.ResolveOperationBeginning -= value;
-            }
+            remove => _applicationContainer.ResolveOperationBeginning -= value;
         }
 
         /// <summary>
@@ -121,23 +103,8 @@ namespace CodEaisy.TinySaas.Internals
             if (string.IsNullOrEmpty(tenantId))
                 return _applicationContainer;
 
-            //If we have created a lifetime for a tenant, return
-            if (_tenantLifetimeScopes.ContainsKey(tenantId))
-                return _tenantLifetimeScopes[tenantId];
-
-            lock (_lock)
-            {
-                if (_tenantLifetimeScopes.ContainsKey(tenantId))
-                {
-                    return _tenantLifetimeScopes[tenantId];
-                }
-                else
-                {
-                    //This is a new tenant, configure a new lifetimescope for it using our tenant sensitive configuration method
-                    _tenantLifetimeScopes.Add(tenantId, _applicationContainer.BeginLifetimeScope(_multiTenantTag, a => _tenantContainerConfiguration(GetCurrentTenant(), a)));
-                    return _tenantLifetimeScopes[tenantId];
-                }
-            }
+            // fetch existing tenant lifetime scope or create a new one
+            return _tenantLifetimeScopes.GetOrAdd(tenantId, id => new Lazy<ILifetimeScope>(() => _applicationContainer.BeginLifetimeScope(_multiTenantTag, a => _tenantContainerConfiguration(GetCurrentTenant(), a)))).Value;
         }
 
         public ILifetimeScope BeginLifetimeScope() => _applicationContainer.BeginLifetimeScope();
@@ -167,13 +134,14 @@ namespace CodEaisy.TinySaas.Internals
         {
             if (disposing)
             {
-                lock (_lock)
-                {
-                    foreach (var scope in _tenantLifetimeScopes)
-                        scope.Value.Dispose();
-                    _applicationContainer.Dispose();
-                }
+                foreach (var scope in _tenantLifetimeScopes)
+                    scope.Value?.Value?.Dispose();
+                _applicationContainer.Dispose();
             }
         }
+
+        public ILifetimeScope BeginLoadContextLifetimeScope(AssemblyLoadContext loadContext, Action<ContainerBuilder> configurationAction) => _applicationContainer.BeginLoadContextLifetimeScope(loadContext, configurationAction);
+
+        public ILifetimeScope BeginLoadContextLifetimeScope(object tag, AssemblyLoadContext loadContext, Action<ContainerBuilder> configurationAction) => _applicationContainer.BeginLoadContextLifetimeScope(tag, loadContext, configurationAction);
     }
 }

@@ -1,5 +1,5 @@
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using CodEaisy.TinySaas.Interfaces;
@@ -25,7 +25,7 @@ namespace CodEaisy.TinySaas.Stores
     /// <typeparam name="T"></typeparam>
     public class ConfigTenantStore<T> : ITenantStore<T> where T: class, ITenant
     {
-        private readonly ConcurrentDictionary<string, T> _allTenants;
+        private readonly ReadOnlyDictionary<string, T> _allTenants;
 
         /// <summary>
         /// ctor
@@ -33,7 +33,7 @@ namespace CodEaisy.TinySaas.Stores
         /// <param name="options"></param>
         public ConfigTenantStore(IOptions<ConfigTenancyOptions<T>> options)
         {
-            _allTenants = new ConcurrentDictionary<string, T>(options.Value.Tenants
+            _allTenants = new ReadOnlyDictionary<string, T>(options.Value.Tenants
                 .ToDictionary(x => x.Identifier, x => x));
         }
 

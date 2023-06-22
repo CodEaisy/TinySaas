@@ -1,0 +1,24 @@
+{
+  "configurations": {
+    "attach": {
+      "adapter": "netcoredbg",
+      "configuration": {
+        "request": "attach",
+        "processId": "${pid}"
+      }
+    },
+    "launch": {
+      "adapter": "netcoredbg",
+      "configuration": {
+        "request": "launch",
+        "program": "${workspaceRoot}/samples/WebApi/bin/Debug/net7.0/CodEaisy.TinySaas.Samples.WebApi.dll",
+        "stopAtEntry": false,
+        "args": ["--", "--", "--launch-profile=https"],
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        },
+        "cwd": "${workspaceRoot}/samples/WebApi"
+      } 
+    }
+  }
+}
