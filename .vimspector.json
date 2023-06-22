@@ -12,8 +12,8 @@
       "configuration": {
         "request": "launch",
         "program": "${workspaceRoot}/samples/WebApi/bin/Debug/net7.0/CodEaisy.TinySaas.Samples.WebApi.dll",
-        "args": [],
         "stopAtEntry": false,
+        "args": ["--", "--", "--launch-profile=https"],
         "env": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         },
