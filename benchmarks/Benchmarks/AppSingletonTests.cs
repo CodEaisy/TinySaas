@@ -6,8 +6,8 @@ using static Benchmarks.BenchmarkHelpers;
 
 namespace Benchmarks
 {
-    [SimpleJob(RuntimeMoniker.NetCoreApp31, baseline: true)]
-    [SimpleJob(RuntimeMoniker.Net50)]
+    [SimpleJob(RuntimeMoniker.Net70, baseline: true)]
+    [SimpleJob(RuntimeMoniker.Net80)]
     public class AppSingletonTests
     {
         private readonly HttpClientWrapper _tinySaasClient;

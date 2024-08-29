@@ -2,15 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp3.1;net5</TargetFrameworks>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="5.0.9" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.20" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="7.0.20" />
   </ItemGroup>
 
   <ItemGroup>

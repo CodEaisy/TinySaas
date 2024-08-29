@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
-    <TargetFramework>net5</TargetFramework>
     <IsPackable>false</IsPackable>
     <Optimize>true</Optimize>
   </PropertyGroup>
