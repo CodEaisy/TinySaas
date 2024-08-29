@@ -6,7 +6,7 @@
     <PackageTags>saas;multitenancy</PackageTags>
     <Description>A multitenancy enabler library for .NET</Description>
     <Authors>Mubarak Imam</Authors>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
