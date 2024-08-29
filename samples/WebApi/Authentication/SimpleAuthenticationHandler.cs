@@ -16,11 +16,17 @@ namespace CodEaisy.TinySaas.Samples.WebApi.Authentication
     /// </summary>
     public class SimpleAuthenticationHandler : AuthenticationHandler<SimpleAuthenticationOptions>
     {
-        public SimpleAuthenticationHandler(
+        #if NET7_0
+            public SimpleAuthenticationHandler(
             IOptionsMonitor<SimpleAuthenticationOptions> options,
             ILoggerFactory logger,
-            UrlEncoder encoder,
-            ISystemClock clock) : base(options, logger, encoder, clock)
+            UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
+        #else
+            public SimpleAuthenticationHandler(
+            IOptionsMonitor<SimpleAuthenticationOptions> options,
+            ILoggerFactory logger,
+            UrlEncoder encoder) : base(options, logger, encoder)
+        #endif
         {
         }
 

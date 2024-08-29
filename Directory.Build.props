@@ -18,10 +18,11 @@
     <IncludeSymbols>false</IncludeSymbols>
 
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>11.0</LangVersion>
     
-    <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+    <MinVerDefaultPreReleaseIdentifiers>preview.0</MinVerDefaultPreReleaseIdentifiers>
     <MinVerTagPrefix>v</MinVerTagPrefix>
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -34,7 +35,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="MinVer" Version="2.3.1">
+    <PackageReference Include="MinVer" Version="5.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
